@@ -1,5 +1,10 @@
 import "dotenv/config";
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
+
+const migrationUrl =
+  process.env.DIRECT_URL ||
+  process.env.DATABASE_URL ||
+  "postgresql://build:build@localhost:5432/build";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -9,7 +14,9 @@ export default defineConfig({
   },
   datasource: {
     // Runtime traffic uses the pooled URL; migrations should prefer a direct
-    // connection when the database provider exposes one.
-    url: process.env.DIRECT_URL || env("DATABASE_URL"),
+    // connection when the database provider exposes one. Client generation
+    // does not connect, so Vercel's dependency install can use a placeholder
+    // before a database integration is attached.
+    url: migrationUrl,
   },
 });
