@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6f8f7;
+  --foreground: #172b35;
+}
+
+.poster-print-root { display: none; }
+.poster-sheet { box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: white; color: #0b2b3c; font-family: var(--font-poppins), sans-serif; }
+.poster-landscape { width: 297mm; height: 210mm; padding: 10mm; page: poster-landscape; }
+.poster-portrait { width: 210mm; height: 297mm; padding: 12mm; page: poster-portrait; }
+.poster-header { display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; gap: 12px; border-bottom: 3px solid #0d8f89; padding-bottom: 10px; }
+.poster-country { display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; background: #ecfdf5; padding: 10px; font-size: 16px; }
+.poster-brand { display: flex; align-items: center; justify-content: center; gap: 12px; text-align: center; }
+.poster-brand img { max-width: 96px; max-height: 64px; object-fit: contain; }
+.poster-brand h1 { font-size: 22px; font-weight: 800; }
+.poster-brand p { font-size: 11px; color: #64748b; }
+.poster-logo-placeholder { display: grid; width: 56px; height: 56px; place-items: center; border-radius: 14px; background: #10b981; color: white; }
+.poster-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0 10px; }
+.poster-title span { font-size: 11px; font-weight: 700; color: #047857; }
+.poster-title h2 { font-size: 24px; font-weight: 900; }
+.poster-meta { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+.poster-meta span { display: flex; align-items: center; gap: 4px; border-radius: 8px; background: #f1f5f9; padding: 6px 8px; color: #475569; }
+.poster-meta svg, .poster-contact svg { width: 13px; height: 13px; }
+.poster-shares { display: grid; flex: 1; align-content: center; gap: 7px; }
+.poster-share { display: grid; grid-template-columns: 42px minmax(0, 1fr) 120px 70px; align-items: center; gap: 8px; min-height: 42px; border: 1px solid #a7f3d0; border-radius: 10px; background: #ecfdf5; padding: 6px 10px; }
+.poster-share strong { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 8px; background: #059669; color: white; }
+.poster-share span { overflow: hidden; font-size: clamp(11px, 1.4vw, 17px); font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+.poster-share small { font-size: 10px; color: #64748b; }
+.poster-share em { font-size: 9px; font-style: normal; font-weight: 800; color: #047857; }
+.poster-share-empty { border-color: #e2e8f0; background: #f8fafc; }
+.poster-share-empty strong { background: #94a3b8; }
+.poster-share-empty span { color: #94a3b8; }
+.poster-footer { display: grid; grid-template-columns: 1fr 1.5fr 1fr; align-items: center; gap: 10px; border-top: 2px solid #d1fae5; padding-top: 9px; font-size: 9px; }
+.poster-supporters { display: flex; align-items: center; gap: 7px; }
+.poster-supporters img { max-width: 72px; max-height: 42px; object-fit: contain; }
+.poster-supporters span { border-radius: 6px; background: #f1f5f9; padding: 5px; font-weight: 700; }
+.poster-contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; color: #475569; }
+.poster-contact span { display: flex; align-items: center; gap: 3px; }
+.poster-footer > strong { text-align: right; }
+.poster-warning { border-radius: 8px; background: #fff7ed; padding: 7px; font-size: 10px; color: #c2410c; }
+.poster-portrait .poster-header { grid-template-columns: 1fr; }
+.poster-portrait .poster-country { padding: 6px; }
+.poster-portrait .poster-title { flex-direction: column; align-items: flex-start; }
+.poster-portrait .poster-meta { justify-content: flex-start; }
+.poster-portrait .poster-share { grid-template-columns: 38px minmax(0, 1fr) 90px 55px; min-height: 52px; }
+.poster-portrait .poster-footer { grid-template-columns: 1fr; text-align: center; }
+.poster-portrait .poster-supporters, .poster-portrait .poster-contact { justify-content: center; }
+.poster-portrait .poster-footer > strong { text-align: center; }
+
+@page poster-landscape { size: A4 landscape; margin: 0; }
+@page poster-portrait { size: A4 portrait; margin: 0; }
+@media print {
+  body { background: white !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  body > * { visibility: hidden !important; }
+  .poster-print-root, .poster-print-root * { visibility: visible !important; }
+  .poster-print-root { display: block !important; position: absolute; inset: 0; }
+  .poster-sheet { break-after: page; page-break-after: always; }
+  .poster-sheet:last-child { break-after: auto; page-break-after: auto; }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-poppins);
+}
+
+* {
+  border-color: #e2e8f0;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), sans-serif;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  cursor: pointer;
+}
+
+::selection {
+  background: #a7f3d0;
+  color: #064e3b;
+}
+
+@media (min-width: 1280px) {
+  .sacrifice-modal-compact .sacrifice-form-grid {
+    gap: 18px;
+    padding: 14px 18px;
+  }
+
+  .sacrifice-modal-compact .sacrifice-form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .sacrifice-modal-compact .sacrifice-section-title {
+    padding-bottom: 7px;
+  }
+
+  .sacrifice-modal-compact .sacrifice-section-title h4 {
+    font-size: 12px;
+  }
+
+  .sacrifice-modal-compact .sacrifice-field-label {
+    margin-bottom: 4px;
+    font-size: 10px;
+    line-height: 13px;
+  }
+
+  .sacrifice-modal-compact .sacrifice-control {
+    height: 36px;
+    border-radius: 8px;
+    font-size: 12px;
+  }
+
+  .sacrifice-modal-compact .sacrifice-form-section input:not([type="checkbox"]):not([type="hidden"]) {
+    height: 36px;
+    border-radius: 8px;
+    font-size: 12px;
+  }
+
+  .sacrifice-modal-compact textarea.sacrifice-control {
+    min-height: 50px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .sacrifice-modal-compact .sacrifice-form-footer {
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+
+  .sacrifice-modal-compact .sacrifice-form-footer > * {
+    height: 36px;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+
+  body {
+    background: white !important;
+    color: #0f172a !important;
+  }
+
+  aside,
+  body > div > div > header,
+  .print-hidden {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+
+  #printable-report {
+    max-width: none !important;
+  }
+
+  #printable-report > * {
+    break-inside: avoid;
+  }
+
+  #printable-report .shadow-\[0_8px_30px_rgb\(15_23_42\/0\.04\)\] {
+    box-shadow: none !important;
+  }
+}

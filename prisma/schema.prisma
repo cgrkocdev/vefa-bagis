@@ -1,0 +1,348 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  DONATION_STAFF
+  REPRESENTATIVE
+  REPORT_VIEWER
+  POSTER_USER
+}
+
+enum ProjectStatus {
+  DRAFT
+  OPEN
+  FULL
+  COMPLETED
+  CLOSED
+  CANCELLED
+}
+
+enum ShareStatus {
+  EMPTY
+  RESERVED
+  FILLED
+  CANCELLED
+}
+
+enum DonationStatus {
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  CANCELLED
+  REFUNDED
+}
+
+enum MessageChannel {
+  SMS
+  WHATSAPP
+}
+
+enum MessageStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model User {
+  id           String            @id @default(cuid())
+  name         String
+  email        String            @unique
+  passwordHash String
+  role         UserRole
+  isActive     Boolean           @default(true)
+  deletedAt    DateTime?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  sessions     Session[]
+  audits       AuditLog[]
+  donations    Donation[]
+  projects     Project[]
+  permissions  CheckPermission[] @relation("PermissionSubject")
+  grants       CheckPermission[] @relation("PermissionGranter")
+  posters      Poster[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  action     String
+  entityType String
+  entityId   String?
+  oldValue   Json?
+  newValue   Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+model Definition {
+  id        String       @id @default(cuid())
+  type      String
+  code      String
+  name      String
+  symbol    String?
+  parentId  String?
+  metadata  Json?
+  sortOrder Int          @default(0)
+  isActive  Boolean      @default(true)
+  deletedAt DateTime?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  parent    Definition?  @relation("DefinitionTree", fields: [parentId], references: [id], onDelete: Restrict)
+  children  Definition[] @relation("DefinitionTree")
+
+  @@unique([type, code])
+  @@index([type, isActive, sortOrder])
+  @@index([parentId])
+}
+
+model Donor {
+  id              String     @id @default(cuid())
+  firstName       String
+  lastName        String
+  normalizedPhone String     @unique
+  phoneCountry    String
+  closePhone      String?
+  originCountry   String?
+  originCity      String?
+  originDistrict  String?
+  deletedAt       DateTime?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  donations       Donation[]
+}
+
+model Project {
+  id                   String        @id @default(cuid())
+  yearId               String
+  departmentId         String
+  typeId               String
+  groupId              String
+  destinationCountryId String
+  partnerId            String?
+  destinationRegionId  String?
+  projectNumber        Int
+  name                 String
+  animalType           String
+  shareCapacity        Int
+  sharePrice           Decimal       @db.Decimal(18, 2)
+  currencyId           String
+  isVirtual            Boolean       @default(false)
+  status               ProjectStatus @default(DRAFT)
+  description          String?
+  deletedAt            DateTime?
+  createdById          String
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  createdBy            User          @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  shares               Share[]
+  donations            Donation[]
+
+  @@unique([yearId, departmentId, projectNumber])
+  @@index([status, deletedAt])
+  @@index([destinationCountryId, partnerId, destinationRegionId])
+}
+
+model Share {
+  id          String      @id @default(cuid())
+  projectId   String
+  shareNumber Int
+  status      ShareStatus @default(EMPTY)
+  donationId  String?     @unique
+  version     Int         @default(1)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  project     Project     @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  donation    Donation?   @relation(fields: [donationId], references: [id], onDelete: SetNull)
+
+  @@unique([projectId, shareNumber])
+  @@index([projectId, status])
+}
+
+model Donation {
+  id                 String         @id @default(cuid())
+  donorId            String
+  projectId          String?
+  createdById        String
+  typeId             String
+  groupId            String?
+  representativeId   String?
+  quantity           Int            @default(1)
+  amount             Decimal        @db.Decimal(18, 2)
+  foreignAmount      Decimal?       @db.Decimal(18, 2)
+  currencyId         String
+  paymentMethodId    String
+  description        String?
+  messageTarget      String         @default("DONOR")
+  status             DonationStatus @default(COMPLETED)
+  cancelledAt        DateTime?
+  cancelledById      String?
+  cancellationReason String?
+  idempotencyKey     String         @unique
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  donor              Donor          @relation(fields: [donorId], references: [id], onDelete: Restrict)
+  project            Project?       @relation(fields: [projectId], references: [id], onDelete: Restrict)
+  createdBy          User           @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  share              Share?
+  payment            Payment?
+  receipt            Receipt?
+  messages           Message[]
+
+  @@index([createdAt, status])
+  @@index([projectId])
+  @@index([representativeId])
+}
+
+model Payment {
+  id         String        @id @default(cuid())
+  donationId String        @unique
+  amount     Decimal       @db.Decimal(18, 2)
+  currencyId String
+  methodId   String
+  status     PaymentStatus @default(PAID)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  donation   Donation      @relation(fields: [donationId], references: [id], onDelete: Restrict)
+}
+
+model Receipt {
+  id         String   @id @default(cuid())
+  donationId String   @unique
+  number     String   @unique
+  issuedAt   DateTime
+  createdAt  DateTime @default(now())
+  donation   Donation @relation(fields: [donationId], references: [id], onDelete: Restrict)
+}
+
+model Message {
+  id           String         @id @default(cuid())
+  donationId   String?
+  channel      MessageChannel
+  recipient    String
+  templateId   String?
+  renderedBody String
+  status       MessageStatus  @default(PENDING)
+  provider     String?
+  providerKey  String?        @unique
+  errorMessage String?
+  retryCount   Int            @default(0)
+  sentAt       DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  donation     Donation?      @relation(fields: [donationId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+}
+
+model CheckPermission {
+  id                String    @id @default(cuid())
+  userId            String
+  canCreate         Boolean   @default(false)
+  canView           Boolean   @default(false)
+  canEdit           Boolean   @default(false)
+  canCancel         Boolean   @default(false)
+  canPrint          Boolean   @default(false)
+  departmentIds     String[]
+  representativeIds String[]
+  startsAt          DateTime
+  endsAt            DateTime?
+  isActive          Boolean   @default(true)
+  grantedById       String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  user              User      @relation("PermissionSubject", fields: [userId], references: [id], onDelete: Cascade)
+  grantedBy         User      @relation("PermissionGranter", fields: [grantedById], references: [id], onDelete: Restrict)
+
+  @@index([userId, isActive, startsAt, endsAt])
+}
+
+model AppSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
+model Association {
+  id            String   @id @default(cuid())
+  name          String
+  shortName     String
+  logoDataUrl   String?
+  logoAlt       String?
+  phone         String?
+  website       String?
+  address       String?
+  isActive      Boolean  @default(true)
+  isDefault     Boolean  @default(false)
+  sortOrder     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  postersAsMain Poster[] @relation("PosterMainAssociation")
+
+  @@index([isActive, sortOrder])
+}
+
+model Poster {
+  id                     String       @id @default(cuid())
+  name                   String
+  orientation            String
+  yearId                 String?
+  departmentId           String?
+  typeId                 String?
+  groupId                String?
+  destinationCountryId   String?
+  partnerId              String?
+  destinationRegionId    String?
+  firstProjectNumber     Int?
+  lastProjectNumber      Int?
+  excludedProjectNumbers Int[]
+  projectIds             String[]
+  associationIds         String[]
+  mainAssociationId      String?
+  showEmptyShares        Boolean      @default(true)
+  shareholderNameFormat  String       @default("FULL")
+  footerNote             String?
+  createdById            String
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+  createdBy              User         @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  mainAssociation        Association? @relation("PosterMainAssociation", fields: [mainAssociationId], references: [id], onDelete: SetNull)
+
+  @@index([createdById, createdAt])
+  @@index([orientation])
+}
+
+model ImportJob {
+  id          String    @id @default(cuid())
+  checksum    String    @unique
+  status      String
+  summary     Json?
+  createdById String
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+}
