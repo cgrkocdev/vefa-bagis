@@ -24,7 +24,7 @@ export type UserRole = keyof typeof USER_ROLES;
 
 export const NAV_ITEMS = [
   { label: "Ana Sayfa", href: "/", icon: LayoutDashboard, roles: ["ADMIN", "DONATION_STAFF", "REPORT_VIEWER"] },
-  { label: "Yeni Bağış", href: "/bagislar/yeni", icon: WalletCards, roles: ["ADMIN", "DONATION_STAFF"] },
+  { label: "Genel Bağış", href: "/bagislar/yeni", icon: WalletCards, roles: ["ADMIN", "DONATION_STAFF"] },
   { label: "Kurbanlar", href: "/kurbanlar", icon: Bird, roles: ["ADMIN", "DONATION_STAFF"] },
   { label: "Bağışçılar", href: "/bagiscilar", icon: UserRound, roles: ["ADMIN", "DONATION_STAFF"] },
   { label: "WhatsApp", href: "/whatsapp", icon: MessageSquareText, roles: ["ADMIN", "DONATION_STAFF"] },
