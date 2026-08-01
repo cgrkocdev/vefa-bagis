@@ -22,7 +22,7 @@ const shares = (prefix: string): Share[] => Array.from({ length: 7 }, (_, index)
 const seed = (): LocalData => ({
   users: [
     { id: "admin", name: "Yasir", email: "yasir@gmail", password: "12345678", roleCode: "ADMIN", role: "ADMIN", isActive: true, createdAt: now() },
-    { id: "staff", name: "Bağış Personeli", email: "personel@vefa.org", password: "Personel123!", roleCode: "DONATION_STAFF", role: "DONATION_STAFF", isActive: true, createdAt: now() },
+    { id: "staff", name: "Bağış Personeli", email: "personel@yedirenk.org", password: "Personel123!", roleCode: "DONATION_STAFF", role: "DONATION_STAFF", isActive: true, createdAt: now() },
   ],
   donors: [], donations: [], whatsapp: [], sms: [], activities: [],
   sacrifices: [
@@ -36,7 +36,7 @@ const seed = (): LocalData => ({
     { id: "akika-8", number: 8, region: "Afrika", kind: "AKIKA", sharePrice: 12500, status: "OPEN", shares: shares("k8") },
     { id: "akika-9", number: 9, region: "Türkiye", kind: "AKIKA", sharePrice: 18500, status: "OPEN", shares: shares("k9") },
   ],
-  settings: { organizationName: "Vefa Bağış Yönetimi", organizationPhone: "", organizationEmail: "", organizationAddress: "", receiptPrefix: "BGS", whatsappEnabled: true },
+  settings: { organizationName: "Yedirenk Derneği Bağış Yönetimi", organizationPhone: "", organizationEmail: "", organizationAddress: "", receiptPrefix: "BGS", whatsappEnabled: true },
 });
 const read = () => {
   const stored = localStorage.getItem(KEY);

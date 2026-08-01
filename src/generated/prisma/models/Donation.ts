@@ -28,12 +28,14 @@ export type AggregateDonation = {
 
 export type DonationAvgAggregateOutputType = {
   quantity: number | null
+  unitPrice: runtime.Decimal | null
   amount: runtime.Decimal | null
   foreignAmount: runtime.Decimal | null
 }
 
 export type DonationSumAggregateOutputType = {
   quantity: number | null
+  unitPrice: runtime.Decimal | null
   amount: runtime.Decimal | null
   foreignAmount: runtime.Decimal | null
 }
@@ -46,12 +48,23 @@ export type DonationMinAggregateOutputType = {
   typeId: string | null
   groupId: string | null
   representativeId: string | null
+  destinationCountryId: string | null
+  destinationRegionId: string | null
+  partnerId: string | null
   quantity: number | null
+  unitType: string | null
+  unitPrice: runtime.Decimal | null
   amount: runtime.Decimal | null
   foreignAmount: runtime.Decimal | null
   currencyId: string | null
   paymentMethodId: string | null
   description: string | null
+  proxyOwner: string | null
+  address: string | null
+  specialCondition: boolean | null
+  orderStatus: boolean | null
+  smsProvider: string | null
+  currencySms: boolean | null
   messageTarget: string | null
   status: $Enums.DonationStatus | null
   cancelledAt: Date | null
@@ -70,12 +83,23 @@ export type DonationMaxAggregateOutputType = {
   typeId: string | null
   groupId: string | null
   representativeId: string | null
+  destinationCountryId: string | null
+  destinationRegionId: string | null
+  partnerId: string | null
   quantity: number | null
+  unitType: string | null
+  unitPrice: runtime.Decimal | null
   amount: runtime.Decimal | null
   foreignAmount: runtime.Decimal | null
   currencyId: string | null
   paymentMethodId: string | null
   description: string | null
+  proxyOwner: string | null
+  address: string | null
+  specialCondition: boolean | null
+  orderStatus: boolean | null
+  smsProvider: string | null
+  currencySms: boolean | null
   messageTarget: string | null
   status: $Enums.DonationStatus | null
   cancelledAt: Date | null
@@ -94,12 +118,23 @@ export type DonationCountAggregateOutputType = {
   typeId: number
   groupId: number
   representativeId: number
+  destinationCountryId: number
+  destinationRegionId: number
+  partnerId: number
   quantity: number
+  unitType: number
+  unitPrice: number
   amount: number
   foreignAmount: number
   currencyId: number
   paymentMethodId: number
   description: number
+  proxyOwner: number
+  address: number
+  specialCondition: number
+  orderStatus: number
+  smsProvider: number
+  currencySms: number
   messageTarget: number
   status: number
   cancelledAt: number
@@ -114,12 +149,14 @@ export type DonationCountAggregateOutputType = {
 
 export type DonationAvgAggregateInputType = {
   quantity?: true
+  unitPrice?: true
   amount?: true
   foreignAmount?: true
 }
 
 export type DonationSumAggregateInputType = {
   quantity?: true
+  unitPrice?: true
   amount?: true
   foreignAmount?: true
 }
@@ -132,12 +169,23 @@ export type DonationMinAggregateInputType = {
   typeId?: true
   groupId?: true
   representativeId?: true
+  destinationCountryId?: true
+  destinationRegionId?: true
+  partnerId?: true
   quantity?: true
+  unitType?: true
+  unitPrice?: true
   amount?: true
   foreignAmount?: true
   currencyId?: true
   paymentMethodId?: true
   description?: true
+  proxyOwner?: true
+  address?: true
+  specialCondition?: true
+  orderStatus?: true
+  smsProvider?: true
+  currencySms?: true
   messageTarget?: true
   status?: true
   cancelledAt?: true
@@ -156,12 +204,23 @@ export type DonationMaxAggregateInputType = {
   typeId?: true
   groupId?: true
   representativeId?: true
+  destinationCountryId?: true
+  destinationRegionId?: true
+  partnerId?: true
   quantity?: true
+  unitType?: true
+  unitPrice?: true
   amount?: true
   foreignAmount?: true
   currencyId?: true
   paymentMethodId?: true
   description?: true
+  proxyOwner?: true
+  address?: true
+  specialCondition?: true
+  orderStatus?: true
+  smsProvider?: true
+  currencySms?: true
   messageTarget?: true
   status?: true
   cancelledAt?: true
@@ -180,12 +239,23 @@ export type DonationCountAggregateInputType = {
   typeId?: true
   groupId?: true
   representativeId?: true
+  destinationCountryId?: true
+  destinationRegionId?: true
+  partnerId?: true
   quantity?: true
+  unitType?: true
+  unitPrice?: true
   amount?: true
   foreignAmount?: true
   currencyId?: true
   paymentMethodId?: true
   description?: true
+  proxyOwner?: true
+  address?: true
+  specialCondition?: true
+  orderStatus?: true
+  smsProvider?: true
+  currencySms?: true
   messageTarget?: true
   status?: true
   cancelledAt?: true
@@ -291,12 +361,23 @@ export type DonationGroupByOutputType = {
   typeId: string
   groupId: string | null
   representativeId: string | null
+  destinationCountryId: string | null
+  destinationRegionId: string | null
+  partnerId: string | null
   quantity: number
+  unitType: string | null
+  unitPrice: runtime.Decimal | null
   amount: runtime.Decimal
   foreignAmount: runtime.Decimal | null
   currencyId: string
   paymentMethodId: string
   description: string | null
+  proxyOwner: string | null
+  address: string | null
+  specialCondition: boolean
+  orderStatus: boolean
+  smsProvider: string | null
+  currencySms: boolean
   messageTarget: string
   status: $Enums.DonationStatus
   cancelledAt: Date | null
@@ -338,12 +419,23 @@ export type DonationWhereInput = {
   typeId?: Prisma.StringFilter<"Donation"> | string
   groupId?: Prisma.StringNullableFilter<"Donation"> | string | null
   representativeId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  destinationCountryId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  destinationRegionId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  partnerId?: Prisma.StringNullableFilter<"Donation"> | string | null
   quantity?: Prisma.IntFilter<"Donation"> | number
+  unitType?: Prisma.StringNullableFilter<"Donation"> | string | null
+  unitPrice?: Prisma.DecimalNullableFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.DecimalNullableFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFilter<"Donation"> | string
   paymentMethodId?: Prisma.StringFilter<"Donation"> | string
   description?: Prisma.StringNullableFilter<"Donation"> | string | null
+  proxyOwner?: Prisma.StringNullableFilter<"Donation"> | string | null
+  address?: Prisma.StringNullableFilter<"Donation"> | string | null
+  specialCondition?: Prisma.BoolFilter<"Donation"> | boolean
+  orderStatus?: Prisma.BoolFilter<"Donation"> | boolean
+  smsProvider?: Prisma.StringNullableFilter<"Donation"> | string | null
+  currencySms?: Prisma.BoolFilter<"Donation"> | boolean
   messageTarget?: Prisma.StringFilter<"Donation"> | string
   status?: Prisma.EnumDonationStatusFilter<"Donation"> | $Enums.DonationStatus
   cancelledAt?: Prisma.DateTimeNullableFilter<"Donation"> | Date | string | null
@@ -369,12 +461,23 @@ export type DonationOrderByWithRelationInput = {
   typeId?: Prisma.SortOrder
   groupId?: Prisma.SortOrderInput | Prisma.SortOrder
   representativeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  destinationCountryId?: Prisma.SortOrderInput | Prisma.SortOrder
+  destinationRegionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerId?: Prisma.SortOrderInput | Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  unitType?: Prisma.SortOrderInput | Prisma.SortOrder
+  unitPrice?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
   foreignAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   currencyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  proxyOwner?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  specialCondition?: Prisma.SortOrder
+  orderStatus?: Prisma.SortOrder
+  smsProvider?: Prisma.SortOrderInput | Prisma.SortOrder
+  currencySms?: Prisma.SortOrder
   messageTarget?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -404,12 +507,23 @@ export type DonationWhereUniqueInput = Prisma.AtLeast<{
   typeId?: Prisma.StringFilter<"Donation"> | string
   groupId?: Prisma.StringNullableFilter<"Donation"> | string | null
   representativeId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  destinationCountryId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  destinationRegionId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  partnerId?: Prisma.StringNullableFilter<"Donation"> | string | null
   quantity?: Prisma.IntFilter<"Donation"> | number
+  unitType?: Prisma.StringNullableFilter<"Donation"> | string | null
+  unitPrice?: Prisma.DecimalNullableFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.DecimalNullableFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFilter<"Donation"> | string
   paymentMethodId?: Prisma.StringFilter<"Donation"> | string
   description?: Prisma.StringNullableFilter<"Donation"> | string | null
+  proxyOwner?: Prisma.StringNullableFilter<"Donation"> | string | null
+  address?: Prisma.StringNullableFilter<"Donation"> | string | null
+  specialCondition?: Prisma.BoolFilter<"Donation"> | boolean
+  orderStatus?: Prisma.BoolFilter<"Donation"> | boolean
+  smsProvider?: Prisma.StringNullableFilter<"Donation"> | string | null
+  currencySms?: Prisma.BoolFilter<"Donation"> | boolean
   messageTarget?: Prisma.StringFilter<"Donation"> | string
   status?: Prisma.EnumDonationStatusFilter<"Donation"> | $Enums.DonationStatus
   cancelledAt?: Prisma.DateTimeNullableFilter<"Donation"> | Date | string | null
@@ -434,12 +548,23 @@ export type DonationOrderByWithAggregationInput = {
   typeId?: Prisma.SortOrder
   groupId?: Prisma.SortOrderInput | Prisma.SortOrder
   representativeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  destinationCountryId?: Prisma.SortOrderInput | Prisma.SortOrder
+  destinationRegionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  partnerId?: Prisma.SortOrderInput | Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  unitType?: Prisma.SortOrderInput | Prisma.SortOrder
+  unitPrice?: Prisma.SortOrderInput | Prisma.SortOrder
   amount?: Prisma.SortOrder
   foreignAmount?: Prisma.SortOrderInput | Prisma.SortOrder
   currencyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  proxyOwner?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
+  specialCondition?: Prisma.SortOrder
+  orderStatus?: Prisma.SortOrder
+  smsProvider?: Prisma.SortOrderInput | Prisma.SortOrder
+  currencySms?: Prisma.SortOrder
   messageTarget?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -466,12 +591,23 @@ export type DonationScalarWhereWithAggregatesInput = {
   typeId?: Prisma.StringWithAggregatesFilter<"Donation"> | string
   groupId?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
   representativeId?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
+  destinationCountryId?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
+  destinationRegionId?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
+  partnerId?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
   quantity?: Prisma.IntWithAggregatesFilter<"Donation"> | number
+  unitType?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
+  unitPrice?: Prisma.DecimalNullableWithAggregatesFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalWithAggregatesFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.DecimalNullableWithAggregatesFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringWithAggregatesFilter<"Donation"> | string
   paymentMethodId?: Prisma.StringWithAggregatesFilter<"Donation"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
+  proxyOwner?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
+  specialCondition?: Prisma.BoolWithAggregatesFilter<"Donation"> | boolean
+  orderStatus?: Prisma.BoolWithAggregatesFilter<"Donation"> | boolean
+  smsProvider?: Prisma.StringNullableWithAggregatesFilter<"Donation"> | string | null
+  currencySms?: Prisma.BoolWithAggregatesFilter<"Donation"> | boolean
   messageTarget?: Prisma.StringWithAggregatesFilter<"Donation"> | string
   status?: Prisma.EnumDonationStatusWithAggregatesFilter<"Donation"> | $Enums.DonationStatus
   cancelledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Donation"> | Date | string | null
@@ -487,12 +623,23 @@ export type DonationCreateInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -518,12 +665,23 @@ export type DonationUncheckedCreateInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -543,12 +701,23 @@ export type DonationUpdateInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -574,12 +743,23 @@ export type DonationUncheckedUpdateInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -602,12 +782,23 @@ export type DonationCreateManyInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -623,12 +814,23 @@ export type DonationUpdateManyMutationInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -647,12 +849,23 @@ export type DonationUncheckedUpdateManyInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -686,12 +899,23 @@ export type DonationCountOrderByAggregateInput = {
   typeId?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   representativeId?: Prisma.SortOrder
+  destinationCountryId?: Prisma.SortOrder
+  destinationRegionId?: Prisma.SortOrder
+  partnerId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  unitType?: Prisma.SortOrder
+  unitPrice?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   foreignAmount?: Prisma.SortOrder
   currencyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  proxyOwner?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  specialCondition?: Prisma.SortOrder
+  orderStatus?: Prisma.SortOrder
+  smsProvider?: Prisma.SortOrder
+  currencySms?: Prisma.SortOrder
   messageTarget?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
@@ -704,6 +928,7 @@ export type DonationCountOrderByAggregateInput = {
 
 export type DonationAvgOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
+  unitPrice?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   foreignAmount?: Prisma.SortOrder
 }
@@ -716,12 +941,23 @@ export type DonationMaxOrderByAggregateInput = {
   typeId?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   representativeId?: Prisma.SortOrder
+  destinationCountryId?: Prisma.SortOrder
+  destinationRegionId?: Prisma.SortOrder
+  partnerId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  unitType?: Prisma.SortOrder
+  unitPrice?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   foreignAmount?: Prisma.SortOrder
   currencyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  proxyOwner?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  specialCondition?: Prisma.SortOrder
+  orderStatus?: Prisma.SortOrder
+  smsProvider?: Prisma.SortOrder
+  currencySms?: Prisma.SortOrder
   messageTarget?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
@@ -740,12 +976,23 @@ export type DonationMinOrderByAggregateInput = {
   typeId?: Prisma.SortOrder
   groupId?: Prisma.SortOrder
   representativeId?: Prisma.SortOrder
+  destinationCountryId?: Prisma.SortOrder
+  destinationRegionId?: Prisma.SortOrder
+  partnerId?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  unitType?: Prisma.SortOrder
+  unitPrice?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   foreignAmount?: Prisma.SortOrder
   currencyId?: Prisma.SortOrder
   paymentMethodId?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  proxyOwner?: Prisma.SortOrder
+  address?: Prisma.SortOrder
+  specialCondition?: Prisma.SortOrder
+  orderStatus?: Prisma.SortOrder
+  smsProvider?: Prisma.SortOrder
+  currencySms?: Prisma.SortOrder
   messageTarget?: Prisma.SortOrder
   status?: Prisma.SortOrder
   cancelledAt?: Prisma.SortOrder
@@ -758,6 +1005,7 @@ export type DonationMinOrderByAggregateInput = {
 
 export type DonationSumOrderByAggregateInput = {
   quantity?: Prisma.SortOrder
+  unitPrice?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   foreignAmount?: Prisma.SortOrder
 }
@@ -970,12 +1218,23 @@ export type DonationCreateWithoutCreatedByInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -999,12 +1258,23 @@ export type DonationUncheckedCreateWithoutCreatedByInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1056,12 +1326,23 @@ export type DonationScalarWhereInput = {
   typeId?: Prisma.StringFilter<"Donation"> | string
   groupId?: Prisma.StringNullableFilter<"Donation"> | string | null
   representativeId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  destinationCountryId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  destinationRegionId?: Prisma.StringNullableFilter<"Donation"> | string | null
+  partnerId?: Prisma.StringNullableFilter<"Donation"> | string | null
   quantity?: Prisma.IntFilter<"Donation"> | number
+  unitType?: Prisma.StringNullableFilter<"Donation"> | string | null
+  unitPrice?: Prisma.DecimalNullableFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.DecimalNullableFilter<"Donation"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFilter<"Donation"> | string
   paymentMethodId?: Prisma.StringFilter<"Donation"> | string
   description?: Prisma.StringNullableFilter<"Donation"> | string | null
+  proxyOwner?: Prisma.StringNullableFilter<"Donation"> | string | null
+  address?: Prisma.StringNullableFilter<"Donation"> | string | null
+  specialCondition?: Prisma.BoolFilter<"Donation"> | boolean
+  orderStatus?: Prisma.BoolFilter<"Donation"> | boolean
+  smsProvider?: Prisma.StringNullableFilter<"Donation"> | string | null
+  currencySms?: Prisma.BoolFilter<"Donation"> | boolean
   messageTarget?: Prisma.StringFilter<"Donation"> | string
   status?: Prisma.EnumDonationStatusFilter<"Donation"> | $Enums.DonationStatus
   cancelledAt?: Prisma.DateTimeNullableFilter<"Donation"> | Date | string | null
@@ -1077,12 +1358,23 @@ export type DonationCreateWithoutDonorInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1106,12 +1398,23 @@ export type DonationUncheckedCreateWithoutDonorInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1157,12 +1460,23 @@ export type DonationCreateWithoutProjectInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1186,12 +1500,23 @@ export type DonationUncheckedCreateWithoutProjectInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1237,12 +1562,23 @@ export type DonationCreateWithoutShareInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1267,12 +1603,23 @@ export type DonationUncheckedCreateWithoutShareInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1307,12 +1654,23 @@ export type DonationUpdateWithoutShareInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1337,12 +1695,23 @@ export type DonationUncheckedUpdateWithoutShareInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1361,12 +1730,23 @@ export type DonationCreateWithoutPaymentInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1391,12 +1771,23 @@ export type DonationUncheckedCreateWithoutPaymentInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1431,12 +1822,23 @@ export type DonationUpdateWithoutPaymentInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1461,12 +1863,23 @@ export type DonationUncheckedUpdateWithoutPaymentInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1485,12 +1898,23 @@ export type DonationCreateWithoutReceiptInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1515,12 +1939,23 @@ export type DonationUncheckedCreateWithoutReceiptInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1555,12 +1990,23 @@ export type DonationUpdateWithoutReceiptInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1585,12 +2031,23 @@ export type DonationUncheckedUpdateWithoutReceiptInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1609,12 +2066,23 @@ export type DonationCreateWithoutMessagesInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1639,12 +2107,23 @@ export type DonationUncheckedCreateWithoutMessagesInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1679,12 +2158,23 @@ export type DonationUpdateWithoutMessagesInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1709,12 +2199,23 @@ export type DonationUncheckedUpdateWithoutMessagesInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1735,12 +2236,23 @@ export type DonationCreateManyCreatedByInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1756,12 +2268,23 @@ export type DonationUpdateWithoutCreatedByInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1785,12 +2308,23 @@ export type DonationUncheckedUpdateWithoutCreatedByInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1812,12 +2346,23 @@ export type DonationUncheckedUpdateManyWithoutCreatedByInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1835,12 +2380,23 @@ export type DonationCreateManyDonorInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1856,12 +2412,23 @@ export type DonationUpdateWithoutDonorInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1885,12 +2452,23 @@ export type DonationUncheckedUpdateWithoutDonorInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1912,12 +2490,23 @@ export type DonationUncheckedUpdateManyWithoutDonorInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1935,12 +2524,23 @@ export type DonationCreateManyProjectInput = {
   typeId: string
   groupId?: string | null
   representativeId?: string | null
+  destinationCountryId?: string | null
+  destinationRegionId?: string | null
+  partnerId?: string | null
   quantity?: number
+  unitType?: string | null
+  unitPrice?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount: runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId: string
   paymentMethodId: string
   description?: string | null
+  proxyOwner?: string | null
+  address?: string | null
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: string | null
+  currencySms?: boolean
   messageTarget?: string
   status?: $Enums.DonationStatus
   cancelledAt?: Date | string | null
@@ -1956,12 +2556,23 @@ export type DonationUpdateWithoutProjectInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1985,12 +2596,23 @@ export type DonationUncheckedUpdateWithoutProjectInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2012,12 +2634,23 @@ export type DonationUncheckedUpdateManyWithoutProjectInput = {
   typeId?: Prisma.StringFieldUpdateOperationsInput | string
   groupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   representativeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationCountryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
+  unitType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unitPrice?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   amount?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   foreignAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   currencyId?: Prisma.StringFieldUpdateOperationsInput | string
   paymentMethodId?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  proxyOwner?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  specialCondition?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orderStatus?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  smsProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currencySms?: Prisma.BoolFieldUpdateOperationsInput | boolean
   messageTarget?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumDonationStatusFieldUpdateOperationsInput | $Enums.DonationStatus
   cancelledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2067,12 +2700,23 @@ export type DonationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   typeId?: boolean
   groupId?: boolean
   representativeId?: boolean
+  destinationCountryId?: boolean
+  destinationRegionId?: boolean
+  partnerId?: boolean
   quantity?: boolean
+  unitType?: boolean
+  unitPrice?: boolean
   amount?: boolean
   foreignAmount?: boolean
   currencyId?: boolean
   paymentMethodId?: boolean
   description?: boolean
+  proxyOwner?: boolean
+  address?: boolean
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: boolean
+  currencySms?: boolean
   messageTarget?: boolean
   status?: boolean
   cancelledAt?: boolean
@@ -2099,12 +2743,23 @@ export type DonationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   typeId?: boolean
   groupId?: boolean
   representativeId?: boolean
+  destinationCountryId?: boolean
+  destinationRegionId?: boolean
+  partnerId?: boolean
   quantity?: boolean
+  unitType?: boolean
+  unitPrice?: boolean
   amount?: boolean
   foreignAmount?: boolean
   currencyId?: boolean
   paymentMethodId?: boolean
   description?: boolean
+  proxyOwner?: boolean
+  address?: boolean
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: boolean
+  currencySms?: boolean
   messageTarget?: boolean
   status?: boolean
   cancelledAt?: boolean
@@ -2126,12 +2781,23 @@ export type DonationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   typeId?: boolean
   groupId?: boolean
   representativeId?: boolean
+  destinationCountryId?: boolean
+  destinationRegionId?: boolean
+  partnerId?: boolean
   quantity?: boolean
+  unitType?: boolean
+  unitPrice?: boolean
   amount?: boolean
   foreignAmount?: boolean
   currencyId?: boolean
   paymentMethodId?: boolean
   description?: boolean
+  proxyOwner?: boolean
+  address?: boolean
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: boolean
+  currencySms?: boolean
   messageTarget?: boolean
   status?: boolean
   cancelledAt?: boolean
@@ -2153,12 +2819,23 @@ export type DonationSelectScalar = {
   typeId?: boolean
   groupId?: boolean
   representativeId?: boolean
+  destinationCountryId?: boolean
+  destinationRegionId?: boolean
+  partnerId?: boolean
   quantity?: boolean
+  unitType?: boolean
+  unitPrice?: boolean
   amount?: boolean
   foreignAmount?: boolean
   currencyId?: boolean
   paymentMethodId?: boolean
   description?: boolean
+  proxyOwner?: boolean
+  address?: boolean
+  specialCondition?: boolean
+  orderStatus?: boolean
+  smsProvider?: boolean
+  currencySms?: boolean
   messageTarget?: boolean
   status?: boolean
   cancelledAt?: boolean
@@ -2169,7 +2846,7 @@ export type DonationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DonationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "donorId" | "projectId" | "createdById" | "typeId" | "groupId" | "representativeId" | "quantity" | "amount" | "foreignAmount" | "currencyId" | "paymentMethodId" | "description" | "messageTarget" | "status" | "cancelledAt" | "cancelledById" | "cancellationReason" | "idempotencyKey" | "createdAt" | "updatedAt", ExtArgs["result"]["donation"]>
+export type DonationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "donorId" | "projectId" | "createdById" | "typeId" | "groupId" | "representativeId" | "destinationCountryId" | "destinationRegionId" | "partnerId" | "quantity" | "unitType" | "unitPrice" | "amount" | "foreignAmount" | "currencyId" | "paymentMethodId" | "description" | "proxyOwner" | "address" | "specialCondition" | "orderStatus" | "smsProvider" | "currencySms" | "messageTarget" | "status" | "cancelledAt" | "cancelledById" | "cancellationReason" | "idempotencyKey" | "createdAt" | "updatedAt", ExtArgs["result"]["donation"]>
 export type DonationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   donor?: boolean | Prisma.DonorDefaultArgs<ExtArgs>
   project?: boolean | Prisma.Donation$projectArgs<ExtArgs>
@@ -2210,12 +2887,23 @@ export type $DonationPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     typeId: string
     groupId: string | null
     representativeId: string | null
+    destinationCountryId: string | null
+    destinationRegionId: string | null
+    partnerId: string | null
     quantity: number
+    unitType: string | null
+    unitPrice: runtime.Decimal | null
     amount: runtime.Decimal
     foreignAmount: runtime.Decimal | null
     currencyId: string
     paymentMethodId: string
     description: string | null
+    proxyOwner: string | null
+    address: string | null
+    specialCondition: boolean
+    orderStatus: boolean
+    smsProvider: string | null
+    currencySms: boolean
     messageTarget: string
     status: $Enums.DonationStatus
     cancelledAt: Date | null
@@ -2661,12 +3349,23 @@ export interface DonationFieldRefs {
   readonly typeId: Prisma.FieldRef<"Donation", 'String'>
   readonly groupId: Prisma.FieldRef<"Donation", 'String'>
   readonly representativeId: Prisma.FieldRef<"Donation", 'String'>
+  readonly destinationCountryId: Prisma.FieldRef<"Donation", 'String'>
+  readonly destinationRegionId: Prisma.FieldRef<"Donation", 'String'>
+  readonly partnerId: Prisma.FieldRef<"Donation", 'String'>
   readonly quantity: Prisma.FieldRef<"Donation", 'Int'>
+  readonly unitType: Prisma.FieldRef<"Donation", 'String'>
+  readonly unitPrice: Prisma.FieldRef<"Donation", 'Decimal'>
   readonly amount: Prisma.FieldRef<"Donation", 'Decimal'>
   readonly foreignAmount: Prisma.FieldRef<"Donation", 'Decimal'>
   readonly currencyId: Prisma.FieldRef<"Donation", 'String'>
   readonly paymentMethodId: Prisma.FieldRef<"Donation", 'String'>
   readonly description: Prisma.FieldRef<"Donation", 'String'>
+  readonly proxyOwner: Prisma.FieldRef<"Donation", 'String'>
+  readonly address: Prisma.FieldRef<"Donation", 'String'>
+  readonly specialCondition: Prisma.FieldRef<"Donation", 'Boolean'>
+  readonly orderStatus: Prisma.FieldRef<"Donation", 'Boolean'>
+  readonly smsProvider: Prisma.FieldRef<"Donation", 'String'>
+  readonly currencySms: Prisma.FieldRef<"Donation", 'Boolean'>
   readonly messageTarget: Prisma.FieldRef<"Donation", 'String'>
   readonly status: Prisma.FieldRef<"Donation", 'DonationStatus'>
   readonly cancelledAt: Prisma.FieldRef<"Donation", 'DateTime'>

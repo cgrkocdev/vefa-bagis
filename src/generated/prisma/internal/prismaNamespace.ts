@@ -412,7 +412,8 @@ export const ModelName = {
   AppSetting: 'AppSetting',
   Association: 'Association',
   Poster: 'Poster',
-  ImportJob: 'ImportJob'
+  ImportJob: 'ImportJob',
+  OnlineDonationSubmission: 'OnlineDonationSubmission'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "auditLog" | "definition" | "donor" | "project" | "share" | "donation" | "payment" | "receipt" | "message" | "checkPermission" | "appSetting" | "association" | "poster" | "importJob"
+    modelProps: "user" | "session" | "auditLog" | "definition" | "donor" | "project" | "share" | "donation" | "payment" | "receipt" | "message" | "checkPermission" | "appSetting" | "association" | "poster" | "importJob" | "onlineDonationSubmission"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1616,6 +1617,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    OnlineDonationSubmission: {
+      payload: Prisma.$OnlineDonationSubmissionPayload<ExtArgs>
+      fields: Prisma.OnlineDonationSubmissionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OnlineDonationSubmissionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OnlineDonationSubmissionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>
+        }
+        findFirst: {
+          args: Prisma.OnlineDonationSubmissionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OnlineDonationSubmissionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>
+        }
+        findMany: {
+          args: Prisma.OnlineDonationSubmissionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>[]
+        }
+        create: {
+          args: Prisma.OnlineDonationSubmissionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>
+        }
+        createMany: {
+          args: Prisma.OnlineDonationSubmissionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OnlineDonationSubmissionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>[]
+        }
+        delete: {
+          args: Prisma.OnlineDonationSubmissionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>
+        }
+        update: {
+          args: Prisma.OnlineDonationSubmissionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>
+        }
+        deleteMany: {
+          args: Prisma.OnlineDonationSubmissionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OnlineDonationSubmissionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OnlineDonationSubmissionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>[]
+        }
+        upsert: {
+          args: Prisma.OnlineDonationSubmissionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OnlineDonationSubmissionPayload>
+        }
+        aggregate: {
+          args: Prisma.OnlineDonationSubmissionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOnlineDonationSubmission>
+        }
+        groupBy: {
+          args: Prisma.OnlineDonationSubmissionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnlineDonationSubmissionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OnlineDonationSubmissionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OnlineDonationSubmissionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1781,12 +1856,23 @@ export const DonationScalarFieldEnum = {
   typeId: 'typeId',
   groupId: 'groupId',
   representativeId: 'representativeId',
+  destinationCountryId: 'destinationCountryId',
+  destinationRegionId: 'destinationRegionId',
+  partnerId: 'partnerId',
   quantity: 'quantity',
+  unitType: 'unitType',
+  unitPrice: 'unitPrice',
   amount: 'amount',
   foreignAmount: 'foreignAmount',
   currencyId: 'currencyId',
   paymentMethodId: 'paymentMethodId',
   description: 'description',
+  proxyOwner: 'proxyOwner',
+  address: 'address',
+  specialCondition: 'specialCondition',
+  orderStatus: 'orderStatus',
+  smsProvider: 'smsProvider',
+  currencySms: 'currencySms',
   messageTarget: 'messageTarget',
   status: 'status',
   cancelledAt: 'cancelledAt',
@@ -1933,6 +2019,31 @@ export const ImportJobScalarFieldEnum = {
 } as const
 
 export type ImportJobScalarFieldEnum = (typeof ImportJobScalarFieldEnum)[keyof typeof ImportJobScalarFieldEnum]
+
+
+export const OnlineDonationSubmissionScalarFieldEnum = {
+  id: 'id',
+  externalReference: 'externalReference',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  phone: 'phone',
+  email: 'email',
+  originCountry: 'originCountry',
+  originCity: 'originCity',
+  originDistrict: 'originDistrict',
+  campaign: 'campaign',
+  amount: 'amount',
+  currencyCode: 'currencyCode',
+  status: 'status',
+  approvedDonationId: 'approvedDonationId',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OnlineDonationSubmissionScalarFieldEnum = (typeof OnlineDonationSubmissionScalarFieldEnum)[keyof typeof OnlineDonationSubmissionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2165,6 +2276,20 @@ export type ListEnumMessageStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'OnlineDonationStatus'
+ */
+export type EnumOnlineDonationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnlineDonationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'OnlineDonationStatus[]'
+ */
+export type ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OnlineDonationStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2344,6 +2469,7 @@ export type GlobalOmitConfig = {
   association?: Prisma.AssociationOmit
   poster?: Prisma.PosterOmit
   importJob?: Prisma.ImportJobOmit
+  onlineDonationSubmission?: Prisma.OnlineDonationSubmissionOmit
 }
 
 /* Types for Logging */

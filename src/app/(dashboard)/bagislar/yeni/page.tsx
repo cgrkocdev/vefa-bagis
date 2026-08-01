@@ -1,15 +1,7 @@
-import { DonationForm } from "@/components/donation-form";
+import { GeneralDonationArea } from "@/components/general-donations/general-donation-area";
 
 export const metadata = { title: "Genel Bağış" };
 
 export default function NewDonationPage() {
-  return (
-    <div className="mx-auto max-w-[1240px]">
-      <div className="mb-6">
-        <h2 className="text-xl font-bold text-[#0b2b3c]">Genel Bağış</h2>
-        <p className="mt-1 text-sm text-slate-500">Bağışçı ve ödeme bilgilerini girerek işlemi tamamlayın.</p>
-      </div>
-      <DonationForm />
-    </div>
-  );
+  return <GeneralDonationArea />;
 }

@@ -3,31 +3,50 @@
 :root {
   --background: #f6f8f7;
   --foreground: #172b35;
+  --brand: #02b3aa;
+  --brand-dark: #027f79;
+  --color-emerald-50: #e6f8f7;
+  --color-emerald-100: #ccf1ef;
+  --color-emerald-200: #99e3df;
+  --color-emerald-300: #66d5cf;
+  --color-emerald-400: #34c5be;
+  --color-emerald-500: #02b3aa;
+  --color-emerald-600: #029d95;
+  --color-emerald-700: #027f79;
+  --color-emerald-800: #026660;
+  --color-emerald-900: #014b47;
+  --color-emerald-950: #003633;
 }
 
 .poster-print-root { display: none; }
 .poster-sheet { box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: white; color: #0b2b3c; font-family: var(--font-poppins), sans-serif; }
 .poster-landscape { width: 297mm; height: 210mm; padding: 10mm; page: poster-landscape; }
 .poster-portrait { width: 210mm; height: 297mm; padding: 12mm; page: poster-portrait; }
-.poster-header { display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; gap: 12px; border-bottom: 3px solid #0d8f89; padding-bottom: 10px; }
-.poster-country { display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; background: #ecfdf5; padding: 10px; font-size: 16px; }
-.poster-brand { display: flex; align-items: center; justify-content: center; gap: 12px; text-align: center; }
-.poster-brand img { max-width: 96px; max-height: 64px; object-fit: contain; }
-.poster-brand h1 { font-size: 22px; font-weight: 800; }
-.poster-brand p { font-size: 11px; color: #64748b; }
-.poster-logo-placeholder { display: grid; width: 56px; height: 56px; place-items: center; border-radius: 14px; background: #10b981; color: white; }
+.poster-header { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 1.35fr) minmax(0, 1fr); align-items: stretch; gap: 12px; border-bottom: 3px solid #02b3aa; padding-bottom: 10px; }
+.poster-country { display: flex; min-width: 0; align-items: center; justify-content: center; gap: 10px; border: 1px solid #b7ece8; border-radius: 12px; background: #e8faf8; padding: 8px 12px; }
+.poster-country > span:last-child { display: flex; min-width: 0; flex-direction: column; }
+.poster-country small { color: #027f79; font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.poster-country strong { overflow: hidden; color: #0b2b3c; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+.poster-flag { width: 44px; height: 30px; flex: none; border-radius: 5px; object-fit: cover; box-shadow: 0 1px 4px #0f172a25; }
+.poster-brand { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border-radius: 12px; background: white; padding: 4px 10px; text-align: center; }
+.poster-brand-logos { display: flex; max-width: 100%; align-items: center; justify-content: center; gap: 10px; }
+.poster-brand-logos img { width: auto; max-width: 145px; height: 44px; object-fit: contain; }
+.poster-brand-logos img:nth-last-child(n+2), .poster-brand-logos img:nth-last-child(n+2) ~ img { max-width: 88px; height: 38px; }
+.poster-brand p { font-size: 8px; font-weight: 700; color: #64748b; letter-spacing: .08em; text-transform: uppercase; }
+.poster-supporter-name { border-radius: 8px; background: #e8faf8; padding: 8px 10px; color: #027f79; font-size: 10px; font-weight: 800; }
+.poster-logo-placeholder { display: grid; width: 56px; height: 56px; place-items: center; border-radius: 14px; background: #02b3aa; color: white; }
 .poster-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0 10px; }
-.poster-title span { font-size: 11px; font-weight: 700; color: #047857; }
+.poster-title span { font-size: 11px; font-weight: 700; color: #027f79; }
 .poster-title h2 { font-size: 24px; font-weight: 900; }
 .poster-meta { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
 .poster-meta span { display: flex; align-items: center; gap: 4px; border-radius: 8px; background: #f1f5f9; padding: 6px 8px; color: #475569; }
 .poster-meta svg, .poster-contact svg { width: 13px; height: 13px; }
 .poster-shares { display: grid; flex: 1; align-content: center; gap: 7px; }
 .poster-share { display: grid; grid-template-columns: 42px minmax(0, 1fr) 120px 70px; align-items: center; gap: 8px; min-height: 42px; border: 1px solid #a7f3d0; border-radius: 10px; background: #ecfdf5; padding: 6px 10px; }
-.poster-share strong { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 8px; background: #059669; color: white; }
+.poster-share strong { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 8px; background: #02b3aa; color: white; }
 .poster-share span { overflow: hidden; font-size: clamp(11px, 1.4vw, 17px); font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
 .poster-share small { font-size: 10px; color: #64748b; }
-.poster-share em { font-size: 9px; font-style: normal; font-weight: 800; color: #047857; }
+.poster-share em { font-size: 9px; font-style: normal; font-weight: 800; color: #027f79; }
 .poster-share-empty { border-color: #e2e8f0; background: #f8fafc; }
 .poster-share-empty strong { background: #94a3b8; }
 .poster-share-empty span { color: #94a3b8; }
@@ -39,8 +58,15 @@
 .poster-contact span { display: flex; align-items: center; gap: 3px; }
 .poster-footer > strong { text-align: right; }
 .poster-warning { border-radius: 8px; background: #fff7ed; padding: 7px; font-size: 10px; color: #c2410c; }
-.poster-portrait .poster-header { grid-template-columns: 1fr; }
-.poster-portrait .poster-country { padding: 6px; }
+.poster-portrait .poster-header { grid-template-columns: minmax(0, .9fr) minmax(150px, 1.25fr) minmax(0, .9fr); gap: 7px; }
+.poster-portrait .poster-country { gap: 5px; padding: 5px; }
+.poster-portrait .poster-country small { font-size: 6px; }
+.poster-portrait .poster-country strong { font-size: 10px; }
+.poster-portrait .poster-flag { width: 32px; height: 22px; }
+.poster-portrait .poster-brand-logos { gap: 4px; }
+.poster-portrait .poster-brand-logos img { max-width: 104px; height: 34px; }
+.poster-portrait .poster-brand-logos img:nth-last-child(n+2), .poster-portrait .poster-brand-logos img:nth-last-child(n+2) ~ img { max-width: 58px; height: 29px; }
+.poster-portrait .poster-brand p { font-size: 6px; }
 .poster-portrait .poster-title { flex-direction: column; align-items: flex-start; }
 .poster-portrait .poster-meta { justify-content: flex-start; }
 .poster-portrait .poster-share { grid-template-columns: 38px minmax(0, 1fr) 90px 55px; min-height: 52px; }
@@ -63,6 +89,17 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-poppins);
+  --color-emerald-50: #e6f8f7;
+  --color-emerald-100: #ccf1ef;
+  --color-emerald-200: #99e3df;
+  --color-emerald-300: #66d5cf;
+  --color-emerald-400: #34c5be;
+  --color-emerald-500: #02b3aa;
+  --color-emerald-600: #029d95;
+  --color-emerald-700: #027f79;
+  --color-emerald-800: #026660;
+  --color-emerald-900: #014b47;
+  --color-emerald-950: #003633;
 }
 
 * {
@@ -99,6 +136,56 @@ a {
 }
 
 @media (min-width: 1280px) {
+  .general-donation-compact .general-donation-grid {
+    gap: 6px 14px;
+    padding: 8px 18px;
+  }
+
+  .general-donation-compact .general-donation-field > span {
+    margin-bottom: 2px;
+    font-size: 9px;
+    line-height: 11px;
+  }
+
+  .general-donation-compact .general-donation-field input,
+  .general-donation-compact .general-donation-field select {
+    height: 31px;
+    min-height: 31px;
+    border-radius: 7px;
+    font-size: 11px;
+  }
+
+  .general-donation-compact .general-address textarea {
+    min-height: 36px;
+    height: 36px;
+  }
+
+  .general-donation-compact .general-description textarea {
+    min-height: 42px;
+    height: 42px;
+  }
+
+  .general-donation-compact .general-donation-check {
+    min-height: 30px;
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+
+  .general-donation-compact .general-message {
+    padding: 5px 8px;
+  }
+
+  .general-donation-compact .general-message > p {
+    margin-bottom: 2px;
+    font-size: 10px;
+  }
+
+  .general-donation-compact .general-message-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+  }
+
   .sacrifice-modal-compact .sacrifice-form-grid {
     gap: 18px;
     padding: 14px 18px;
@@ -183,5 +270,34 @@ a {
 
   #printable-report .shadow-\[0_8px_30px_rgb\(15_23_42\/0\.04\)\] {
     box-shadow: none !important;
+  }
+
+  .detail-report-print {
+    width: 100% !important;
+    font-size: 9px !important;
+  }
+
+  .detail-report-print > div:first-child {
+    display: none !important;
+  }
+
+  .detail-report-print .overflow-y-auto {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .detail-report-print table {
+    table-layout: fixed !important;
+  }
+
+  .detail-report-print thead,
+  .detail-report-print tfoot {
+    position: static !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .detail-report-print tr {
+    break-inside: avoid;
   }
 }

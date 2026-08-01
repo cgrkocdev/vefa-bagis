@@ -6,16 +6,17 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocalAuth } from "@/lib/local-auth";
 import { Input } from "@/components/ui/input";
+import { findReportSection } from "@/lib/report-sections";
 
 const pageDetails: Record<string, { title: string; description: string }> = {
   "/": { title: "Ana Sayfa", description: "Bağış süreçlerinin güncel özeti" },
   "/bagislar/yeni": { title: "Yeni Bağış", description: "Hızlı ve güvenli bağış kaydı" },
-  "/kurbanlar": { title: "Kurbanlar", description: "Kampanya ve hisse yönetimi" },
+  "/online-bagislar": { title: "Gelen Online Bağışlar", description: "Web sitesi üzerinden tamamlanan demo ödemeler" },
+  "/kurbanlar": { title: "Kurban", description: "Kampanya ve hisse yönetimi" },
   "/kurbanlar/bagis": { title: "Kurban Bağışı", description: "Kurban projeleri ve bağışçı kayıtları" },
   "/kurbanlar/bagis/yeni": { title: "Kurban Bağış Formu", description: "Yeni kurban bağışı ve vekâlet kaydı" },
   "/kurbanlar/sorgu": { title: "Kurban Sorgu", description: "Bağış ve hisse kayıtlarında ayrıntılı arama" },
   "/kurbanlar/proje-planlama": { title: "Kurban Projesi Planlama", description: "Proje, kapasite, fiyat ve durum yönetimi" },
-  "/kurbanlar/temsilci-listeleri": { title: "Temsilci Listeleri", description: "Merkez ve temsilci kayıt karşılaştırması" },
   "/kurbanlar/cek-yetkileri": { title: "Bağış Çeki Yetkileri", description: "Kullanıcı bazlı çek işlem izinleri" },
   "/bagiscilar": { title: "Bağışçılar", description: "Bağışçı kayıtları ve işlem geçmişi" },
   "/whatsapp": { title: "WhatsApp", description: "Anlık teşekkür mesajları ve gönderim kayıtları" },
@@ -31,21 +32,29 @@ const pageDetails: Record<string, { title: string; description: string }> = {
 export function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
-  const details = pageDetails[pathname] ?? pageDetails["/"];
+  const reportSection = pathname.startsWith("/raporlar/") ? findReportSection(pathname.split("/")[2] ?? "") : undefined;
+  const details = reportSection
+    ? { title: reportSection.label, description: "Bağış performansı ve tahsilat verileri" }
+    : pageDetails[pathname] ?? pageDetails["/"];
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [searching, setSearching] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notificationsLoading, setNotificationsLoading] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const { user, logout } = useLocalAuth();
   const menuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const close = (event: MouseEvent) => {
       if (!menuRef.current?.contains(event.target as Node)) setUserMenuOpen(false);
       if (!searchRef.current?.contains(event.target as Node)) setSearchOpen(false);
+      if (!notificationsRef.current?.contains(event.target as Node)) setNotificationsOpen(false);
     };
     document.addEventListener("mousedown", close);
     return () => document.removeEventListener("mousedown", close);
@@ -91,6 +100,22 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
     router.push(result.href);
   }
 
+  async function toggleNotifications() {
+    const nextOpen = !notificationsOpen;
+    setNotificationsOpen(nextOpen);
+    if (!nextOpen || notifications.length) return;
+    setNotificationsLoading(true);
+    try {
+      const response = await fetch("/api/reports?days=30", { cache: "no-store" });
+      const data = (await response.json()) as { activities?: NotificationItem[] };
+      setNotifications(response.ok ? (data.activities ?? []).slice(0, 8) : []);
+    } catch {
+      setNotifications([]);
+    } finally {
+      setNotificationsLoading(false);
+    }
+  }
+
   return (
     <header className="sticky top-0 z-30 flex min-h-[84px] items-center gap-3 border-b border-slate-200/70 bg-[#f6f8f7]/92 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
       <button
@@ -112,10 +137,21 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
       <button onClick={() => { setSearchOpen(true); window.setTimeout(() => searchInputRef.current?.focus(), 0); }} aria-label="Genel aramayı aç" className="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200/80 bg-white text-slate-600 shadow-sm hover:bg-slate-50 xl:hidden"><Search className="size-[19px]" /></button>
 
-      <button aria-label="Bildirimler" className="relative grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200/80 bg-white text-slate-600 shadow-sm hover:bg-slate-50">
-        <Bell className="size-[19px]" />
-        <span className="absolute right-2 top-2 size-2 rounded-full bg-emerald-500 ring-2 ring-white" />
-      </button>
+      <div ref={notificationsRef} className="relative">
+        <button onClick={() => void toggleNotifications()} aria-label="Bildirimler" aria-expanded={notificationsOpen} className="relative grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200/80 bg-white text-slate-600 shadow-sm hover:bg-slate-50">
+          <Bell className="size-[19px]" />
+          <span className="absolute right-2 top-2 size-2 rounded-full bg-emerald-500 ring-2 ring-white" />
+        </button>
+        {notificationsOpen && <div className="absolute right-0 top-[calc(100%+8px)] z-50 w-[min(360px,calc(100vw-32px))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-950/15">
+          <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3"><div><p className="text-sm font-bold text-[#0b2b3c]">Bildirimler</p><p className="mt-0.5 text-[10px] text-slate-500">Son sistem hareketleri</p></div><button onClick={() => setNotificationsOpen(false)} aria-label="Bildirimleri kapat" className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100"><X className="size-4" /></button></div>
+          <div className="max-h-96 divide-y divide-slate-100 overflow-auto">
+            {notificationsLoading ? <div className="flex items-center justify-center gap-2 p-8 text-xs text-slate-500"><LoaderCircle className="size-4 animate-spin" /> Bildirimler yükleniyor</div>
+              : notifications.length ? notifications.map((item) => <div key={item.id} className="px-4 py-3 hover:bg-slate-50"><div className="flex items-start gap-3"><span className="mt-1 size-2 shrink-0 rounded-full bg-emerald-500" /><div className="min-w-0"><p className="text-xs font-semibold text-slate-800">{item.user.name}</p><p className="mt-1 text-[11px] text-slate-500">{notificationLabel(item.action)}</p><p className="mt-1.5 text-[10px] text-slate-400">{new Date(item.createdAt).toLocaleString("tr-TR")}</p></div></div></div>)
+              : <div className="p-8 text-center"><Bell className="mx-auto size-6 text-slate-300" /><p className="mt-2 text-xs font-medium text-slate-600">Yeni bildirim bulunmuyor.</p></div>}
+          </div>
+          <Link href="/raporlar" onClick={() => setNotificationsOpen(false)} className="block border-t border-slate-100 px-4 py-3 text-center text-xs font-semibold text-emerald-700 hover:bg-emerald-50">Tüm hareketleri görüntüle</Link>
+        </div>}
+      </div>
 
       <div ref={menuRef} className="relative">
         <button
@@ -154,6 +190,22 @@ type SearchResult = {
   description: string;
   href: string;
 };
+
+type NotificationItem = { id: string; action: string; createdAt: string; user: { name: string } };
+
+function notificationLabel(action: string) {
+  const labels: Record<string, string> = {
+    DONATION_CREATED: "Yeni bağış kaydetti",
+    ONLINE_DONATION_RECEIVED: "Web sitesinden online bağış alındı",
+    SACRIFICE_SHARE_AUTO_ASSIGNED: "Kurban hissesi atadı",
+    SACRIFICE_SHARE_RESERVED: "Kurban hissesi kaydetti",
+    WHATSAPP_SENT: "WhatsApp mesajı gönderdi",
+    USER_CREATED: "Kullanıcı oluşturdu",
+    USER_UPDATED: "Kullanıcı bilgilerini güncelledi",
+    SETTINGS_UPDATED: "Sistem ayarlarını güncelledi",
+  };
+  return labels[action] ?? action.replaceAll("_", " ").toLocaleLowerCase("tr-TR");
+}
 
 function SearchBox({
   inputRef, query, setQuery, open, setOpen, searching, results, onSelect, mobile = false,

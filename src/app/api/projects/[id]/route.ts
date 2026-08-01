@@ -3,6 +3,7 @@ import { apiError } from "@/lib/server/api";
 import { ApiError, requestIp, requirePermission } from "@/lib/server/auth";
 import { getPrisma } from "@/lib/server/prisma";
 import { projectInputSchema } from "@/lib/server/schemas";
+import { validateProjectDefinitions } from "@/lib/server/definition-integrity";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -12,9 +13,22 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const prisma = getPrisma();
     const previous = await prisma.project.findUnique({ where: { id } });
     if (!previous || previous.deletedAt) throw new ApiError(404, "Proje bulunamadı.");
-    const updated = await prisma.project.update({
-      where: { id },
-      data: { ...input, ...(input.sharePrice ? { sharePrice: new Prisma.Decimal(input.sharePrice) } : {}) },
+    const updated = await prisma.$transaction(async (tx) => {
+      const merged = {
+        yearId: input.yearId ?? previous.yearId,
+        departmentId: input.departmentId ?? previous.departmentId,
+        typeId: input.typeId ?? previous.typeId,
+        groupId: input.groupId ?? previous.groupId,
+        destinationCountryId: input.destinationCountryId ?? previous.destinationCountryId,
+        partnerId: input.partnerId === undefined ? previous.partnerId : input.partnerId,
+        destinationRegionId: input.destinationRegionId === undefined ? previous.destinationRegionId : input.destinationRegionId,
+        currencyId: input.currencyId ?? previous.currencyId,
+      };
+      await validateProjectDefinitions(tx, merged);
+      return tx.project.update({
+        where: { id },
+        data: { ...input, ...(input.sharePrice ? { sharePrice: new Prisma.Decimal(input.sharePrice) } : {}) },
+      });
     });
     await prisma.auditLog.create({ data: { userId: user.id, action: "PROJECT_UPDATED", entityType: "Project", entityId: id, oldValue: { ...previous, sharePrice: previous.sharePrice.toString() }, newValue: { ...updated, sharePrice: updated.sharePrice.toString() }, ipAddress: await requestIp() } });
     return Response.json({ project: { ...updated, sharePrice: updated.sharePrice.toString() } });

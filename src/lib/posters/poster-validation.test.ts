@@ -5,7 +5,7 @@ import type { PosterProject } from "./poster-types";
 
 const project = (projectNumber: number, status = "OPEN"): PosterProject => ({
   id: String(projectNumber), projectNumber, name: `Proje ${projectNumber}`, year: "2026", department: "Büyükbaş",
-  type: "Kurban", group: "Vacip", country: "Somali", countryCode: "SO", partner: "Vefa", region: "Somali",
+  type: "Kurban", group: "Vacip", country: "Somali", countryCode: "SO", partner: "Yedirenk", region: "Somali",
   status, isVirtual: false, shareCapacity: 7, shares: [],
 });
 

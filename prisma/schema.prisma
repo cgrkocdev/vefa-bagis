@@ -54,6 +54,12 @@ enum MessageStatus {
   FAILED
 }
 
+enum OnlineDonationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model User {
   id           String            @id @default(cuid())
   name         String
@@ -145,7 +151,7 @@ model Project {
   groupId              String
   destinationCountryId String
   partnerId            String?
-  destinationRegionId  String?
+  destinationRegionId  String
   projectNumber        Int
   name                 String
   animalType           String
@@ -163,7 +169,7 @@ model Project {
   shares               Share[]
   donations            Donation[]
 
-  @@unique([yearId, departmentId, projectNumber])
+  @@unique([yearId, departmentId, destinationCountryId, destinationRegionId, projectNumber])
   @@index([status, deletedAt])
   @@index([destinationCountryId, partnerId, destinationRegionId])
 }
@@ -192,12 +198,23 @@ model Donation {
   typeId             String
   groupId            String?
   representativeId   String?
+  destinationCountryId String?
+  destinationRegionId  String?
+  partnerId             String?
   quantity           Int            @default(1)
+  unitType           String?
+  unitPrice          Decimal?       @db.Decimal(18, 2)
   amount             Decimal        @db.Decimal(18, 2)
   foreignAmount      Decimal?       @db.Decimal(18, 2)
   currencyId         String
   paymentMethodId    String
   description        String?
+  proxyOwner         String?
+  address            String?
+  specialCondition   Boolean        @default(false)
+  orderStatus        Boolean        @default(false)
+  smsProvider        String?
+  currencySms        Boolean        @default(false)
   messageTarget      String         @default("DONOR")
   status             DonationStatus @default(COMPLETED)
   cancelledAt        DateTime?
@@ -345,4 +362,29 @@ model ImportJob {
   createdById String
   createdAt   DateTime  @default(now())
   completedAt DateTime?
+}
+
+model OnlineDonationSubmission {
+  id                 String               @id @default(cuid())
+  externalReference  String               @unique
+  firstName          String
+  lastName           String
+  phone              String
+  email              String
+  originCountry      String               @default("Türkiye")
+  originCity         String
+  originDistrict     String               @default("Merkez")
+  campaign           String
+  amount             Decimal              @db.Decimal(18, 2)
+  currencyCode       String               @default("TRY")
+  status             OnlineDonationStatus @default(PENDING)
+  approvedDonationId String?              @unique
+  reviewedById       String?
+  reviewedAt         DateTime?
+  rejectionReason    String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  @@index([status, createdAt])
+  @@index([phone])
 }

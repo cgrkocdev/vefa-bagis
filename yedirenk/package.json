@@ -1,0 +1,22 @@
+{
+  "name": "yedirenk-dernegi",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node -e \"const fs=require('fs'); fs.mkdirSync('dist/server',{recursive:true}); fs.mkdirSync('dist/.openai',{recursive:true}); fs.copyFileSync('scripts/server.js','dist/server/index.js'); fs.copyFileSync('.openai/hosting.json','dist/.openai/hosting.json')\"",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.4.1",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.6.3",
+    "vite": "^6.1.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.0"
+  }
+}

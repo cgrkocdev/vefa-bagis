@@ -12,7 +12,8 @@ const TYPES = [
   ["ORIGIN_DISTRICT", "Gelen ilçeler"], ["DESTINATION_COUNTRY", "Giden ülkeler"], ["DESTINATION_REGION", "Giden bölgeler"],
   ["PARTNER", "Partner kurumlar"], ["REPRESENTATIVE", "Temsilcilikler"], ["PAYMENT_METHOD", "Ödeme yöntemleri"],
   ["CURRENCY", "Para birimleri"], ["ORGANIZATION", "Dernek / kurumlar"], ["MESSAGE_TEMPLATE", "Mesaj şablonları"],
-  ["PROJECT_STATUS", "Proje durumları"], ["SHARE_STATUS", "Hisse durumları"],
+  ["PROJECT_STATUS", "Proje durumları"], ["SHARE_STATUS", "Hisse durumları"], ["UNIT_TYPE", "Birim cinsleri"],
+  ["GENERAL_DONATION_GROUP", "Genel bağış grupları"],
 ] as const;
 
 type DefinitionType = (typeof TYPES)[number][0];
@@ -44,11 +45,13 @@ export function DefinitionManager() {
   }, [type]);
 
   const parentType = type === "ORIGIN_CITY"
-    ? "ORIGIN_COUNTRY"
-    : type === "ORIGIN_DISTRICT"
-      ? "ORIGIN_CITY"
-      : type === "DESTINATION_REGION"
-        ? "DESTINATION_COUNTRY"
+      ? "ORIGIN_COUNTRY"
+      : type === "ORIGIN_DISTRICT"
+        ? "ORIGIN_CITY"
+        : type === "PARTNER"
+          ? "DESTINATION_COUNTRY"
+        : type === "DESTINATION_REGION"
+          ? "DESTINATION_COUNTRY"
         : null;
 
   useEffect(() => { const timer = window.setTimeout(() => void load(), 0); return () => window.clearTimeout(timer); }, [load]);

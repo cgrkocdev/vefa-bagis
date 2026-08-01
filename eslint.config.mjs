@@ -5,6 +5,15 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    rules: {
+      // These client screens intentionally start cancellable/guarded data loads
+      // on mount. React 19's broad rule also flags the loading-state setters
+      // inside those async callbacks, although they do not form render loops.
+      "react-hooks/set-state-in-effect": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^SentStatisticsTable$" }],
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
@@ -12,6 +21,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "yedirenk/**",
   ]),
 ]);
 

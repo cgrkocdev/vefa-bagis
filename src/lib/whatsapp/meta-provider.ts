@@ -18,6 +18,24 @@ export class MetaWhatsAppProvider implements WhatsAppProvider {
 
   async sendDonationThanks(input: WhatsAppSendInput): Promise<WhatsAppSendResult> {
     try {
+      const template = this.templateName === "hello_world"
+        ? {
+            name: this.templateName,
+            language: { code: this.templateLanguage },
+          }
+        : {
+            name: this.templateName,
+            language: { code: this.templateLanguage },
+            components: [{
+              type: "body",
+              parameters: [
+                { type: "text", text: input.donorName },
+                { type: "text", text: input.amount },
+                { type: "text", text: input.donationType },
+              ],
+            }],
+          };
+
       const response = await fetch(
         `https://graph.facebook.com/${this.apiVersion}/${this.phoneNumberId}/messages`,
         {
@@ -30,18 +48,7 @@ export class MetaWhatsAppProvider implements WhatsAppProvider {
             messaging_product: "whatsapp",
             to: input.phone.replace(/\D/g, ""),
             type: "template",
-            template: {
-              name: this.templateName,
-              language: { code: this.templateLanguage },
-              components: [{
-                type: "body",
-                parameters: [
-                  { type: "text", text: input.donorName },
-                  { type: "text", text: input.amount },
-                  { type: "text", text: input.donationType },
-                ],
-              }],
-            },
+            template,
           }),
         },
       );

@@ -10,8 +10,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Vefa | Bağış Yönetimi", template: "%s | Vefa" },
-  description: "Bağış ve kurban süreçleri için güvenli yönetim sistemi.",
+  title: { default: "Yedirenk Derneği | Bağış Yönetimi", template: "%s | Yedirenk Derneği" },
+  description: "Yedirenk Derneği bağış ve kurban süreçleri yönetim sistemi.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

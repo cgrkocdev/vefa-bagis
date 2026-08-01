@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Bird, Check, ChevronDown, ChevronUp, LoaderCircle, MapPin, Search, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Bird, ChevronDown, ChevronUp, MapPin, Search, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ErrorState, Skeleton } from "@/components/ui/states";
 import { PAYMENT_METHODS, SACRIFICE_KINDS, type SacrificeKind } from "@/lib/constants";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
+import { formatPhone } from "@/lib/phone";
 
 type ShareStatus = "EMPTY" | "PENDING" | "FILLED" | "CANCELLED";
 type Share = {
@@ -17,8 +17,11 @@ type Share = {
   paymentStatus: "PENDING" | "PAID" | "CANCELLED";
   paymentMethod: string | null;
   amount: number;
+  description: string;
+  receiptNo: string;
+  createdAt: string | null;
   version: number;
-  donor: { name: string; phone: string } | null;
+  donor: { firstName: string; lastName: string; phone: string; city: string; district: string } | null;
 };
 type Sacrifice = {
   id: string;
@@ -105,7 +108,7 @@ export function SacrificeBoard() {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[920px] text-left">
-            <thead className="bg-[#0d8f89] text-[10px] uppercase tracking-wide text-white">
+            <thead className="bg-[#02b3aa] text-[10px] uppercase tracking-wide text-white">
               <tr>{["Proje", "Kurban grubu", "Ülke / Bölge", "Hisse bedeli", "Dolu", "Boş", "Durum", ""].map((heading) => <th key={heading} className="px-4 py-3 font-semibold">{heading}</th>)}</tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -124,7 +127,7 @@ export function SacrificeBoard() {
                     <td className="px-4 py-3"><span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${sacrifice.status === "COMPLETED" ? "bg-emerald-50 text-emerald-700" : "bg-sky-50 text-sky-700"}`}>{sacrifice.status === "COMPLETED" ? "Tamamlandı" : "Hisseye açık"}</span></td>
                     <td className="px-4 py-3 text-right"><button type="button" onClick={() => setExpandedId(expanded ? null : sacrifice.id)} className="inline-flex items-center gap-1 rounded-lg px-2.5 py-2 font-semibold text-emerald-700 hover:bg-emerald-50">Hisseler {expanded ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}</button></td>
                   </tr>,
-                  expanded ? <tr key={`${sacrifice.id}-shares`}><td colSpan={8} className="bg-slate-50/70 px-5 py-4"><div className="flex flex-wrap gap-2">{sacrifice.shares.map((share) => <button key={share.id} disabled={share.status !== "EMPTY" || sacrifice.status !== "OPEN"} onClick={() => setSelected({ sacrifice, share })} className={`min-w-24 rounded-lg border px-3 py-2 text-xs font-bold disabled:cursor-default ${shareStyles[share.status]}`}>{share.shareNo}. Hisse · {statusLabels[share.status]}</button>)}</div></td></tr> : null,
+                  expanded ? <tr key={`${sacrifice.id}-shares`}><td colSpan={8} className="bg-slate-50/70 px-5 py-4"><div className="flex flex-wrap gap-2">{sacrifice.shares.map((share) => share.status === "FILLED" && share.donor ? <button type="button" key={share.id} onClick={() => setSelected({ sacrifice, share })} className={`min-w-32 rounded-lg border px-3 py-2 text-xs font-bold transition hover:-translate-y-0.5 hover:shadow-sm ${shareStyles.FILLED}`}>{share.donor.firstName} {share.donor.lastName}</button> : <span key={share.id} className={`min-w-24 rounded-lg border px-3 py-2 text-center text-xs font-bold ${shareStyles[share.status]}`}>{share.shareNo}. Hisse · {statusLabels[share.status]}</span>)}</div></td></tr> : null,
                 ];
               })}
               {!filtered.length && <tr><td colSpan={8} className="p-12 text-center text-sm text-slate-500">Aramaya uygun kurban projesi bulunamadı.</td></tr>}
@@ -133,41 +136,25 @@ export function SacrificeBoard() {
         </div>
         <div className="border-t border-slate-100 px-5 py-3 text-[11px] text-slate-500">Gösterilen proje: {filtered.length} / {sacrifices.length}</div>
       </Card>
-      {selected && <ShareModal selected={selected} onClose={() => setSelected(null)} onSaved={async () => { setSelected(null); await load(); }} />}
+      {selected && <FilledShareModal selected={selected} onClose={() => setSelected(null)} />}
     </>
   );
 }
 
-function ShareModal({ selected, onClose, onSaved }: { selected: { sacrifice: Sacrifice; share: Share }; onClose: () => void; onSaved: () => Promise<void> }) {
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  async function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setSaving(true);
-    setError("");
-    const values = new FormData(event.currentTarget);
-    const response = await fetch("/api/sacrifices/shares", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        sacrificeId: selected.sacrifice.id,
-        shareNo: selected.share.shareNo,
-        version: selected.share.version,
-        donorName: values.get("donorName"),
-        phone: values.get("phone"),
-        amount: values.get("amount"),
-        paymentMethod: values.get("paymentMethod"),
-        paymentStatus: values.get("paymentStatus"),
-        sendWhatsapp: values.get("sendWhatsapp") === "on",
-      }),
-    });
-    const data = (await response.json()) as { message?: string };
-    if (!response.ok) {
-      setError(data.message ?? "Hisse kaydedilemedi.");
-      setSaving(false);
-      return;
-    }
-    await onSaved();
-  }
-  return <div className="fixed inset-0 z-[70] grid place-items-center bg-slate-950/40 p-4 backdrop-blur-sm" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><Card className="max-h-[92vh] w-full max-w-lg overflow-auto p-6"><div className="flex items-start justify-between"><div><p className="text-[10px] font-bold uppercase tracking-wide text-emerald-700">{SACRIFICE_KINDS.find((item) => item.value === selected.sacrifice.kind)?.label}</p><h2 className="text-lg font-bold text-[#0b2b3c]">{selected.sacrifice.number}. Kurban · {selected.share.shareNo}. Hisse</h2><p className="mt-1 text-xs text-slate-500">{selected.sacrifice.region} için hisse kaydı</p></div><button onClick={onClose} className="rounded-lg p-2 text-slate-400 hover:bg-slate-100"><X className="size-5" /></button></div><form onSubmit={submit} className="mt-6 grid gap-4 sm:grid-cols-2"><label className="sm:col-span-2"><span className="mb-2 block text-xs font-semibold">Bağışçı</span><Input name="donorName" required placeholder="Ad soyad" /></label><label className="sm:col-span-2"><span className="mb-2 block text-xs font-semibold">Telefon</span><Input name="phone" required inputMode="tel" placeholder="05XX XXX XX XX" /></label><label><span className="mb-2 block text-xs font-semibold">Hisse tutarı</span><Input name="amount" required type="number" min="1" defaultValue={selected.sacrifice.sharePrice} /></label><label><span className="mb-2 block text-xs font-semibold">Ödeme yöntemi</span><select name="paymentMethod" className="h-12 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm">{PAYMENT_METHODS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label><label><span className="mb-2 block text-xs font-semibold">Ödeme durumu</span><select name="paymentStatus" className="h-12 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm"><option value="PAID">Ödendi</option><option value="PENDING">Bekliyor</option><option value="CANCELLED">İptal</option></select></label><label className="flex items-end"><span className="flex h-12 w-full items-center gap-2 rounded-xl bg-slate-50 px-3 text-xs font-medium"><input name="sendWhatsapp" type="checkbox" defaultChecked className="accent-emerald-600" /> WhatsApp gönder</span></label>{error && <p role="alert" className="rounded-xl bg-red-50 p-3 text-xs text-red-700 sm:col-span-2">{error}</p>}<div className="flex gap-3 pt-2 sm:col-span-2"><Button type="button" variant="outline" className="flex-1" onClick={onClose}>Vazgeç</Button><Button type="submit" variant="success" className="flex-1" disabled={saving}>{saving ? <LoaderCircle className="size-4 animate-spin" /> : <><Check className="size-4" /> Kaydet</>}</Button></div></form></Card></div>;
+function FilledShareModal({ selected, onClose }: { selected: { sacrifice: Sacrifice; share: Share }; onClose: () => void }) {
+  const { sacrifice, share } = selected;
+  const donor = share.donor;
+  const paymentMethod = PAYMENT_METHODS.find((item) => item.value === share.paymentMethod)?.label ?? share.paymentMethod ?? "Belirtilmedi";
+  const paymentStatus = share.paymentStatus === "PAID" ? "Ödendi" : share.paymentStatus === "PENDING" ? "Bekliyor" : "İptal";
+  const details = [
+    ["Bağışçı", donor ? `${donor.firstName} ${donor.lastName}` : "Belirtilmedi"],
+    ["Telefon", donor ? formatPhone(donor.phone) : "Belirtilmedi"],
+    ["İl / İlçe", donor ? [donor.city, donor.district].filter(Boolean).join(" / ") || "Belirtilmedi" : "Belirtilmedi"],
+    ["Hisse tutarı", formatCurrency(share.amount)],
+    ["Ödeme yöntemi", paymentMethod],
+    ["Ödeme durumu", paymentStatus],
+    ["Makbuz no", share.receiptNo || "Belirtilmedi"],
+    ["Kayıt tarihi", share.createdAt ? formatDate(share.createdAt) : "Belirtilmedi"],
+  ];
+  return <div className="fixed inset-0 z-[70] grid place-items-center bg-slate-950/40 p-4 backdrop-blur-sm" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><Card className="w-full max-w-xl overflow-hidden"><div className="flex items-start justify-between bg-[#02b3aa] px-6 py-5 text-white"><div><p className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-100">{SACRIFICE_KINDS.find((item) => item.value === sacrifice.kind)?.label}</p><h2 className="mt-1 text-lg font-bold">{sacrifice.number}. Kurban · {share.shareNo}. Hisse</h2><p className="mt-1 text-xs text-emerald-50/80">{sacrifice.region} · Dolu hisse bilgileri</p></div><button type="button" onClick={onClose} className="rounded-lg p-2 text-white/80 hover:bg-white/10 hover:text-white"><X className="size-5" /></button></div><div className="grid gap-3 p-6 sm:grid-cols-2">{details.map(([label, value]) => <div key={label} className="rounded-xl border border-slate-100 bg-slate-50 p-3"><p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">{label}</p><p className="mt-1 text-sm font-semibold text-slate-800">{value}</p></div>)}{share.description && <div className="rounded-xl border border-slate-100 bg-slate-50 p-3 sm:col-span-2"><p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">Açıklama</p><p className="mt-1 text-sm leading-6 text-slate-700">{share.description}</p></div>}</div></Card></div>;
 }

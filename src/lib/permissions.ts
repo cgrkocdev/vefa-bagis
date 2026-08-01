@@ -49,12 +49,12 @@ export function hasPermission(role: UserRole, permission: Permission) {
 
 export const routePermissions: Record<string, Permission> = {
   "/bagislar/yeni": "donation:create",
+  "/online-bagislar": "donation:view",
   "/kurbanlar": "sacrifice:manage",
   "/kurbanlar/bagis": "sacrifice:manage",
   "/kurbanlar/bagis/yeni": "sacrifice:manage",
   "/kurbanlar/sorgu": "donation:view",
   "/kurbanlar/proje-planlama": "sacrifice:manage",
-  "/kurbanlar/temsilci-listeleri": "donation:view",
   "/kurbanlar/cek-yetkileri": "user:manage",
   "/bagiscilar": "donation:view",
   "/whatsapp": "sms:send",

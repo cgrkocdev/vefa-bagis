@@ -12,6 +12,7 @@ export async function GET() {
     });
     return Response.json({ donors: donors.map((donor) => ({
       id: donor.id, name: `${donor.firstName} ${donor.lastName}`, phone: donor.normalizedPhone,
+      country: donor.originCountry ?? "", city: donor.originCity ?? "", district: donor.originDistrict ?? "",
       totalDonation: donor.donations.reduce((sum, item) => sum + Number(item.amount), 0),
       donationCount: donor.donations.length,
       lastDonationAt: donor.donations.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0]?.createdAt.toISOString() ?? null,

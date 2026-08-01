@@ -291,7 +291,7 @@ export type ProjectGroupByOutputType = {
   groupId: string
   destinationCountryId: string
   partnerId: string | null
-  destinationRegionId: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -338,7 +338,7 @@ export type ProjectWhereInput = {
   groupId?: Prisma.StringFilter<"Project"> | string
   destinationCountryId?: Prisma.StringFilter<"Project"> | string
   partnerId?: Prisma.StringNullableFilter<"Project"> | string | null
-  destinationRegionId?: Prisma.StringNullableFilter<"Project"> | string | null
+  destinationRegionId?: Prisma.StringFilter<"Project"> | string
   projectNumber?: Prisma.IntFilter<"Project"> | number
   name?: Prisma.StringFilter<"Project"> | string
   animalType?: Prisma.StringFilter<"Project"> | string
@@ -365,7 +365,7 @@ export type ProjectOrderByWithRelationInput = {
   groupId?: Prisma.SortOrder
   destinationCountryId?: Prisma.SortOrder
   partnerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  destinationRegionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  destinationRegionId?: Prisma.SortOrder
   projectNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
   animalType?: Prisma.SortOrder
@@ -386,7 +386,7 @@ export type ProjectOrderByWithRelationInput = {
 
 export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  yearId_departmentId_projectNumber?: Prisma.ProjectYearIdDepartmentIdProjectNumberCompoundUniqueInput
+  yearId_departmentId_destinationCountryId_destinationRegionId_projectNumber?: Prisma.ProjectYearIdDepartmentIdDestinationCountryIdDestinationRegionIdProjectNumberCompoundUniqueInput
   AND?: Prisma.ProjectWhereInput | Prisma.ProjectWhereInput[]
   OR?: Prisma.ProjectWhereInput[]
   NOT?: Prisma.ProjectWhereInput | Prisma.ProjectWhereInput[]
@@ -396,7 +396,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   groupId?: Prisma.StringFilter<"Project"> | string
   destinationCountryId?: Prisma.StringFilter<"Project"> | string
   partnerId?: Prisma.StringNullableFilter<"Project"> | string | null
-  destinationRegionId?: Prisma.StringNullableFilter<"Project"> | string | null
+  destinationRegionId?: Prisma.StringFilter<"Project"> | string
   projectNumber?: Prisma.IntFilter<"Project"> | number
   name?: Prisma.StringFilter<"Project"> | string
   animalType?: Prisma.StringFilter<"Project"> | string
@@ -413,7 +413,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   shares?: Prisma.ShareListRelationFilter
   donations?: Prisma.DonationListRelationFilter
-}, "id" | "yearId_departmentId_projectNumber">
+}, "id" | "yearId_departmentId_destinationCountryId_destinationRegionId_projectNumber">
 
 export type ProjectOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -423,7 +423,7 @@ export type ProjectOrderByWithAggregationInput = {
   groupId?: Prisma.SortOrder
   destinationCountryId?: Prisma.SortOrder
   partnerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  destinationRegionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  destinationRegionId?: Prisma.SortOrder
   projectNumber?: Prisma.SortOrder
   name?: Prisma.SortOrder
   animalType?: Prisma.SortOrder
@@ -455,7 +455,7 @@ export type ProjectScalarWhereWithAggregatesInput = {
   groupId?: Prisma.StringWithAggregatesFilter<"Project"> | string
   destinationCountryId?: Prisma.StringWithAggregatesFilter<"Project"> | string
   partnerId?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
-  destinationRegionId?: Prisma.StringNullableWithAggregatesFilter<"Project"> | string | null
+  destinationRegionId?: Prisma.StringWithAggregatesFilter<"Project"> | string
   projectNumber?: Prisma.IntWithAggregatesFilter<"Project"> | number
   name?: Prisma.StringWithAggregatesFilter<"Project"> | string
   animalType?: Prisma.StringWithAggregatesFilter<"Project"> | string
@@ -479,7 +479,7 @@ export type ProjectCreateInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -505,7 +505,7 @@ export type ProjectUncheckedCreateInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -531,7 +531,7 @@ export type ProjectUpdateInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -557,7 +557,7 @@ export type ProjectUncheckedUpdateInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -583,7 +583,7 @@ export type ProjectCreateManyInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -607,7 +607,7 @@ export type ProjectUpdateManyMutationInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -630,7 +630,7 @@ export type ProjectUncheckedUpdateManyInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -656,9 +656,11 @@ export type ProjectOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type ProjectYearIdDepartmentIdProjectNumberCompoundUniqueInput = {
+export type ProjectYearIdDepartmentIdDestinationCountryIdDestinationRegionIdProjectNumberCompoundUniqueInput = {
   yearId: string
   departmentId: string
+  destinationCountryId: string
+  destinationRegionId: string
   projectNumber: number
 }
 
@@ -848,7 +850,7 @@ export type ProjectCreateWithoutCreatedByInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -873,7 +875,7 @@ export type ProjectUncheckedCreateWithoutCreatedByInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -927,7 +929,7 @@ export type ProjectScalarWhereInput = {
   groupId?: Prisma.StringFilter<"Project"> | string
   destinationCountryId?: Prisma.StringFilter<"Project"> | string
   partnerId?: Prisma.StringNullableFilter<"Project"> | string | null
-  destinationRegionId?: Prisma.StringNullableFilter<"Project"> | string | null
+  destinationRegionId?: Prisma.StringFilter<"Project"> | string
   projectNumber?: Prisma.IntFilter<"Project"> | number
   name?: Prisma.StringFilter<"Project"> | string
   animalType?: Prisma.StringFilter<"Project"> | string
@@ -951,7 +953,7 @@ export type ProjectCreateWithoutSharesInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -976,7 +978,7 @@ export type ProjectUncheckedCreateWithoutSharesInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -1017,7 +1019,7 @@ export type ProjectUpdateWithoutSharesInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1042,7 +1044,7 @@ export type ProjectUncheckedUpdateWithoutSharesInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1067,7 +1069,7 @@ export type ProjectCreateWithoutDonationsInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -1092,7 +1094,7 @@ export type ProjectUncheckedCreateWithoutDonationsInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -1133,7 +1135,7 @@ export type ProjectUpdateWithoutDonationsInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1158,7 +1160,7 @@ export type ProjectUncheckedUpdateWithoutDonationsInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1183,7 +1185,7 @@ export type ProjectCreateManyCreatedByInput = {
   groupId: string
   destinationCountryId: string
   partnerId?: string | null
-  destinationRegionId?: string | null
+  destinationRegionId: string
   projectNumber: number
   name: string
   animalType: string
@@ -1206,7 +1208,7 @@ export type ProjectUpdateWithoutCreatedByInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1231,7 +1233,7 @@ export type ProjectUncheckedUpdateWithoutCreatedByInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1256,7 +1258,7 @@ export type ProjectUncheckedUpdateManyWithoutCreatedByInput = {
   groupId?: Prisma.StringFieldUpdateOperationsInput | string
   destinationCountryId?: Prisma.StringFieldUpdateOperationsInput | string
   partnerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  destinationRegionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  destinationRegionId?: Prisma.StringFieldUpdateOperationsInput | string
   projectNumber?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   animalType?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1442,7 +1444,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     groupId: string
     destinationCountryId: string
     partnerId: string | null
-    destinationRegionId: string | null
+    destinationRegionId: string
     projectNumber: number
     name: string
     animalType: string

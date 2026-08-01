@@ -477,6 +477,23 @@ export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntNullableFilter<$PrismaModel>
 }
 
+export type EnumOnlineDonationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.OnlineDonationStatus | Prisma.EnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OnlineDonationStatus[] | Prisma.ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OnlineDonationStatus[] | Prisma.ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOnlineDonationStatusFilter<$PrismaModel> | $Enums.OnlineDonationStatus
+}
+
+export type EnumOnlineDonationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OnlineDonationStatus | Prisma.EnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OnlineDonationStatus[] | Prisma.ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OnlineDonationStatus[] | Prisma.ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOnlineDonationStatusWithAggregatesFilter<$PrismaModel> | $Enums.OnlineDonationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOnlineDonationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOnlineDonationStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -897,6 +914,23 @@ export type NestedFloatNullableFilter<$PrismaModel = never> = {
   gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
+}
+
+export type NestedEnumOnlineDonationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.OnlineDonationStatus | Prisma.EnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OnlineDonationStatus[] | Prisma.ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OnlineDonationStatus[] | Prisma.ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOnlineDonationStatusFilter<$PrismaModel> | $Enums.OnlineDonationStatus
+}
+
+export type NestedEnumOnlineDonationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OnlineDonationStatus | Prisma.EnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.OnlineDonationStatus[] | Prisma.ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OnlineDonationStatus[] | Prisma.ListEnumOnlineDonationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOnlineDonationStatusWithAggregatesFilter<$PrismaModel> | $Enums.OnlineDonationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOnlineDonationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOnlineDonationStatusFilter<$PrismaModel>
 }
 
 

@@ -9,14 +9,15 @@ import { formatPhone } from "@/lib/phone";
 import { formatDate } from "@/lib/utils";
 
 type SmsItem = {
-  id: string; phone: string; message: string; status: "QUEUED" | "SENT" | "DELIVERED" | "FAILED";
+  id: string; phone: string; message: string; status: "PENDING" | "SENT" | "FAILED";
   errorMessage: string | null; sentAt: string | null; createdAt: string; donor: { name: string } | null;
 };
-const labels = { QUEUED: "Sırada", SENT: "Gönderildi", DELIVERED: "Teslim edildi", FAILED: "Başarısız" };
+const labels = { PENDING: "Sırada", SENT: "Gönderildi", FAILED: "Başarısız" };
 
 export function SmsList() {
   const [messages, setMessages] = useState<SmsItem[]>([]);
   const [provider, setProvider] = useState("");
+  const [configured, setConfigured] = useState(false);
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,9 +25,9 @@ export function SmsList() {
     setLoading(true); setError("");
     try {
       const response = await fetch("/api/sms");
-      const data = (await response.json()) as { messages?: SmsItem[]; provider?: string; balance?: number | null; message?: string };
+      const data = (await response.json()) as { messages?: SmsItem[]; provider?: string; configured?: boolean; balance?: number | null; message?: string };
       if (!response.ok) throw new Error(data.message);
-      setMessages(data.messages ?? []); setProvider(data.provider ?? ""); setBalance(data.balance ?? null);
+      setMessages(data.messages ?? []); setProvider(data.provider ?? ""); setConfigured(Boolean(data.configured)); setBalance(data.balance ?? null);
     } catch { setError("SMS kayıtları yüklenemedi."); }
     finally { setLoading(false); }
   }, []);
@@ -49,9 +50,10 @@ export function SmsList() {
       <Card className="h-fit p-5">
         <span className="grid size-11 place-items-center rounded-xl bg-sky-50 text-sky-700"><Send className="size-5" /></span>
         <p className="mt-4 text-xs text-slate-500">Aktif servis</p><p className="mt-1 font-bold capitalize text-[#0b2b3c]">{provider}</p>
+        <span className={`mt-3 inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold ${configured ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>{configured ? "Gerçek gönderim aktif" : "Demo gönderim modu"}</span>
         <div className="my-4 border-t border-slate-100" />
         <p className="text-xs text-slate-500">Kalan bakiye</p><p className="mt-1 text-xl font-bold text-[#0b2b3c]">{balance === null ? "Bilinmiyor" : `${balance} SMS`}</p>
-        <p className="mt-4 flex items-start gap-2 rounded-xl bg-slate-50 p-3 text-[10px] leading-4 text-slate-500"><MessageSquareText className="mt-0.5 size-3.5 shrink-0" />Geliştirme ortamında gerçek SMS gönderilmez.</p>
+        <p className="mt-4 flex items-start gap-2 rounded-xl bg-slate-50 p-3 text-[10px] leading-4 text-slate-500"><MessageSquareText className="mt-0.5 size-3.5 shrink-0" />{configured ? "Onaylanan online bağışlara Twilio üzerinden otomatik SMS gönderilir." : "Twilio bilgileri girildiğinde gerçek SMS gönderimine geçilir."}</p>
       </Card>
     </div>
   );

@@ -4,7 +4,7 @@ import { normalizePhone } from "../phone";
 
 const id = "cm12345678901234567890123";
 
-describe("Vefa iş kuralı doğrulamaları", () => {
+describe("Yedirenk iş kuralı doğrulamaları", () => {
   it("telefon numarasını Türkiye E.164 biçimine getirir", () => {
     expect(normalizePhone("0532 111 22 33")).toBe("+905321112233");
     expect(normalizePhone("+49 151 12345678")).toBe("+49 151 12345678");

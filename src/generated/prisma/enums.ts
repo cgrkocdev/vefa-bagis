@@ -75,3 +75,12 @@ export const MessageStatus = {
 } as const
 
 export type MessageStatus = (typeof MessageStatus)[keyof typeof MessageStatus]
+
+
+export const OnlineDonationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type OnlineDonationStatus = (typeof OnlineDonationStatus)[keyof typeof OnlineDonationStatus]

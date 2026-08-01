@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, HandHeart, LoaderCircle, LockKeyhole, Mail } from "lucide-react";
+import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -35,23 +36,21 @@ export default function LoginPage() {
   return (
     <main className="grid min-h-screen bg-[#f6f8f7] lg:grid-cols-[1.05fr_0.95fr]">
       <section className="hidden overflow-hidden bg-[#082839] p-12 text-white lg:flex lg:flex-col lg:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="grid size-11 place-items-center rounded-xl bg-emerald-500"><HandHeart className="size-6" /></span>
-          <div><p className="text-xl font-bold">Vefa</p><p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">Bağış Yönetimi</p></div>
+        <div className="w-fit rounded-2xl bg-white px-3 py-2 shadow-xl shadow-black/15">
+          <Image src="/yedirenk-logo.png" alt="Yedirenk Derneği logosu" width={230} height={90} className="h-[76px] w-[210px] object-contain" priority />
         </div>
         <div className="max-w-xl">
           <div className="mb-8 h-1 w-14 rounded-full bg-emerald-500" />
           <h1 className="text-4xl font-bold leading-tight xl:text-5xl">İyiliği, güvenle<br />ve kolayca yönetin.</h1>
           <p className="mt-6 max-w-lg text-base leading-7 text-slate-300">Bağış, bağışçı ve kurban süreçleriniz tek bir güvenli çalışma alanında.</p>
         </div>
-        <p className="text-xs text-slate-500">© 2026 Vefa Bağış Yönetim Sistemi</p>
+        <p className="text-xs text-slate-500">© 2026 Yedirenk Derneği Bağış Yönetim Sistemi</p>
       </section>
 
       <section className="flex items-center justify-center px-5 py-12 sm:px-10">
         <div className="w-full max-w-md">
-          <div className="mb-9 flex items-center gap-3 lg:hidden">
-            <span className="grid size-10 place-items-center rounded-xl bg-emerald-500 text-white"><HandHeart className="size-5" /></span>
-            <strong className="text-xl text-[#0b2b3c]">Vefa</strong>
+          <div className="mb-9 w-fit rounded-xl bg-white px-2 py-1 shadow-sm lg:hidden">
+            <Image src="/yedirenk-logo.png" alt="Yedirenk Derneği logosu" width={190} height={74} className="h-[64px] w-[175px] object-contain" priority />
           </div>
           <p className="text-sm font-semibold text-emerald-600">Tekrar hoş geldiniz</p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-[#0b2b3c]">Hesabınıza giriş yapın</h2>

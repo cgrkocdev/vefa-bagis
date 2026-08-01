@@ -121,3 +121,8 @@ export type Poster = Prisma.PosterModel
  * 
  */
 export type ImportJob = Prisma.ImportJobModel
+/**
+ * Model OnlineDonationSubmission
+ * 
+ */
+export type OnlineDonationSubmission = Prisma.OnlineDonationSubmissionModel

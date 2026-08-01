@@ -5,7 +5,7 @@ import { requestIp, requirePermission } from "@/lib/server/auth";
 import { getPrisma } from "@/lib/server/prisma";
 
 const defaults = {
-  organizationName: "Vefa Bağış Yönetimi",
+  organizationName: "Yedirenk Derneği Bağış Yönetimi",
   organizationPhone: "",
   organizationEmail: "",
   organizationAddress: "",

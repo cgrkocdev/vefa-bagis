@@ -6,7 +6,7 @@ import { ArrowLeft, Bird, Check, ChevronDown, LoaderCircle, MessageCircle, Phone
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { PAYMENT_METHODS, SACRIFICE_KINDS, type SacrificeKind } from "@/lib/constants";
+import { SACRIFICE_KINDS, type SacrificeKind } from "@/lib/constants";
 import { getCountries, getCountryCallingCode, type Country } from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
 import trLabels from "react-phone-number-input/locale/tr.json";
@@ -14,11 +14,18 @@ import { City, State } from "country-state-city";
 
 type Sacrifice = {
   id: string;
+  typeId: string;
+  groupId: string;
+  currencyId: string;
   number: number;
+  name: string;
+  country: string;
+  partner: string;
   region: string;
+  group: string;
   kind: SacrificeKind;
   sharePrice: number;
-  status: "OPEN" | "COMPLETED";
+  status: "OPEN" | "COMPLETED" | "CANCELLED";
   shares: Array<{ shareNo: number; status: string }>;
 };
 
@@ -38,7 +45,35 @@ type LocationDefinition = {
   name: string;
   parentId: string | null;
 };
-type FormDefinition = { id: string; type: string; code: string; name: string };
+type FormDefinition = {
+  id: string;
+  type: string;
+  code: string;
+  name: string;
+  parentId: string | null;
+};
+
+export type SacrificeDonationEditData = {
+  donationId: string;
+  projectId: string;
+  projectName: string;
+  projectNo: number;
+  shareNo: number;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  phoneCountry: string;
+  city: string;
+  district: string;
+  date: string;
+  kind: SacrificeKind;
+  country: string;
+  partner: string;
+  paymentMethod: string;
+  amount: number;
+  description: string;
+  quantity: number;
+};
 
 const fieldClass =
   "sacrifice-control h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-800 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-50";
@@ -47,21 +82,28 @@ export function SacrificeDonationForm({
   modal = false,
   onClose,
   onSaved,
+  editData,
 }: {
   modal?: boolean;
   onClose?: () => void;
   onSaved?: () => void | Promise<void>;
+  editData?: SacrificeDonationEditData;
 }) {
   const [sacrifices, setSacrifices] = useState<Sacrifice[]>([]);
-  const [kind, setKind] = useState<SacrificeKind>("VACIP");
-  const [sacrificeId, setSacrificeId] = useState("");
-  const [amount, setAmount] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("CASH");
+  const [kind, setKind] = useState<SacrificeKind>(editData?.kind ?? "VACIP");
+  const [destinationCountry, setDestinationCountry] = useState(editData?.country ?? "");
+  const [partner, setPartner] = useState(editData?.partner ?? "");
+  const [sacrificeId, setSacrificeId] = useState(editData?.projectId ?? "");
+  const [quantity, setQuantity] = useState(editData?.quantity ?? 1);
+  const [amount, setAmount] = useState(editData ? String(editData.amount) : "");
+  const [paymentMethod, setPaymentMethod] = useState(editData?.paymentMethod ?? "CASH");
   const [sendWhatsapp, setSendWhatsapp] = useState(true);
   const [sendToProxy, setSendToProxy] = useState(false);
   const [sendCurrencySms, setSendCurrencySms] = useState(false);
-  const [phoneCountry, setPhoneCountry] = useState<PhoneCountryCode>("TR");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const initialPhoneCountry = (editData?.phoneCountry || "TR") as PhoneCountryCode;
+  const initialDial = `+${getCountryCallingCode(initialPhoneCountry)}`;
+  const [phoneCountry, setPhoneCountry] = useState<PhoneCountryCode>(initialPhoneCountry);
+  const [phoneNumber, setPhoneNumber] = useState(editData?.phone.startsWith(initialDial) ? editData.phone.slice(initialDial.length) : editData?.phone ?? "");
   const [originStateCode, setOriginStateCode] = useState("");
   const [originCityName, setOriginCityName] = useState("");
   const [locationDefinitions, setLocationDefinitions] = useState<LocationDefinition[]>([]);
@@ -81,18 +123,21 @@ export function SacrificeDonationForm({
       .then((data) => {
         const items = data.sacrifices ?? [];
         setSacrifices(items);
+        if (editData) return;
         const first = items.find((item) => item.kind === "VACIP" && item.status === "OPEN" && item.shares.some((share) => share.status === "EMPTY"));
         if (first) {
+          setDestinationCountry(first.country);
+          setPartner(first.partner);
           setSacrificeId(first.id);
           setAmount(String(first.sharePrice));
         }
       })
       .catch(() => setError("Kurban projeleri yüklenemedi."));
-  }, []);
+  }, [editData]);
 
   useEffect(() => {
     void Promise.all(
-      ["DEPARTMENT", "PARTNER"].map(async (type) => {
+      ["DEPARTMENT", "PARTNER", "DESTINATION_COUNTRY", "PAYMENT_METHOD"].map(async (type) => {
         const response = await fetch(`/api/definitions?type=${type}`);
         if (!response.ok) return [];
         const data = (await response.json()) as { definitions?: FormDefinition[] };
@@ -113,11 +158,37 @@ export function SacrificeDonationForm({
   }, []);
 
   const available = useMemo(
-    () => sacrifices.filter((item) => item.kind === kind && item.status === "OPEN" && item.shares.some((share) => share.status === "EMPTY")),
-    [kind, sacrifices],
+    () => sacrifices.filter((item) =>
+      item.kind === kind &&
+      (!destinationCountry || item.country === destinationCountry) &&
+      (!partner || item.partner === partner) &&
+      (item.id === editData?.projectId || (
+        item.status === "OPEN" &&
+        item.shares.some((share) => share.status === "EMPTY")
+      )),
+    ),
+    [destinationCountry, editData?.projectId, kind, partner, sacrifices],
   );
-  const selected = available.find((item) => item.id === sacrificeId) ?? available[0];
-  const emptyShare = selected?.shares.find((share) => share.status === "EMPTY");
+  const matchingProjects = useMemo(
+    () => sacrifices.filter((item) =>
+      item.kind === kind &&
+      (!destinationCountry || item.country === destinationCountry) &&
+      (!partner || item.partner === partner) &&
+      item.status !== "CANCELLED",
+    ),
+    [destinationCountry, kind, partner, sacrifices],
+  );
+  const selected = sacrifices.find((item) => item.id === sacrificeId) ?? available[0];
+  const emptyShares = selected?.shares.filter((share) => share.status === "EMPTY") ?? [];
+  const assignedShares = emptyShares.slice(0, quantity);
+  const selectedCountryDefinition = formDefinitions.find(
+    (item) => item.type === "DESTINATION_COUNTRY" && item.name === destinationCountry,
+  );
+  const availablePartners = formDefinitions.filter(
+    (item) =>
+      item.type === "PARTNER" &&
+      (!selectedCountryDefinition || !item.parentId || item.parentId === selectedCountryDefinition.id),
+  );
   const originStates = useMemo(() => {
     const country = locationDefinitions.find((item) => item.type === "ORIGIN_COUNTRY" && item.code === phoneCountry);
     const managed = country
@@ -141,6 +212,15 @@ export function SacrificeDonationForm({
     [locationDefinitions, originStateCode, phoneCountry],
   );
 
+  useEffect(() => {
+    if (!editData || originStateCode || !originStates.length) return;
+    const state = originStates.find((item) => item.name === editData.city);
+    if (state) {
+      setOriginStateCode(state.isoCode);
+      setOriginCityName(editData.district);
+    }
+  }, [editData, originStateCode, originStates]);
+
   function changeOriginCountry(country: PhoneCountryCode) {
     setPhoneCountry(country);
     setOriginStateCode("");
@@ -149,17 +229,62 @@ export function SacrificeDonationForm({
 
   function chooseProject(project: Sacrifice | undefined) {
     if (!project) return;
+    setDestinationCountry(project.country);
+    setPartner(project.partner);
     setSacrificeId(project.id);
+    const emptyCount = project.shares.filter((share) => share.status === "EMPTY").length;
+    setQuantity((current) => Math.min(current, Math.max(1, emptyCount)));
     setAmount(String(project.sharePrice));
   }
 
   function changeKind(nextKind: SacrificeKind) {
     setKind(nextKind);
-    chooseProject(
-      sacrifices.find(
-        (item) => item.kind === nextKind && item.status === "OPEN" && item.shares.some((share) => share.status === "EMPTY"),
-      ),
+    const next = sacrifices.find(
+      (item) =>
+        item.kind === nextKind &&
+        (!destinationCountry || item.country === destinationCountry) &&
+        (!partner || item.partner === partner) &&
+        item.status === "OPEN" &&
+        item.shares.some((share) => share.status === "EMPTY"),
     );
+    if (next) chooseProject(next);
+    else {
+      setSacrificeId("");
+      setAmount("");
+    }
+  }
+
+  function changeDestinationCountry(country: string) {
+    setDestinationCountry(country);
+    const next = sacrifices.find(
+      (item) =>
+        item.kind === kind &&
+        item.country === country &&
+        item.status === "OPEN" &&
+        item.shares.some((share) => share.status === "EMPTY"),
+    );
+    if (next) chooseProject(next);
+    else {
+      setSacrificeId("");
+      setAmount("");
+    }
+  }
+
+  function changePartner(nextPartner: string) {
+    setPartner(nextPartner);
+    const next = sacrifices.find(
+      (item) =>
+        item.kind === kind &&
+        (!destinationCountry || item.country === destinationCountry) &&
+        item.partner === nextPartner &&
+        item.status === "OPEN" &&
+        item.shares.some((share) => share.status === "EMPTY"),
+    );
+    if (next) chooseProject(next);
+    else {
+      setSacrificeId("");
+      setAmount("");
+    }
   }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -177,7 +302,6 @@ export function SacrificeDonationForm({
     setError("");
     setSuccess("");
     const values = new FormData(event.currentTarget);
-    const donorName = `${values.get("firstName")} ${values.get("lastName")}`.trim();
     const details = [
       `Bölüm: ${values.get("department")}`,
       `Gelen ülke: ${values.get("originCountry")}`,
@@ -188,24 +312,65 @@ export function SacrificeDonationForm({
       `Açıklama: ${values.get("description")}`,
     ].join(" · ");
     try {
-      const response = await fetch("/api/donations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "Kurban",
-          sacrificeId: selected.id,
-          donorName,
-          phone: values.get("phone"),
-          amount: numericAmount,
-          paymentMethod,
-          description: details,
-          sendWhatsapp,
-          idempotencyKey: crypto.randomUUID(),
-        }),
-      });
-      const result = (await response.json()) as { message?: string };
-      if (!response.ok) throw new Error(result.message);
-      setSuccess("Kurban bağışı başarıyla kaydedildi ve hisse atandı.");
+      if (editData) {
+        const response = await fetch(`/api/donations/${editData.donationId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            firstName: String(values.get("firstName") ?? ""),
+            lastName: String(values.get("lastName") ?? ""),
+            city: String(values.get("originCity") ?? "") || null,
+            district: String(values.get("originDistrict") ?? "") || null,
+            date: values.get("date"),
+            description: String(values.get("description") ?? ""),
+          }),
+        });
+        const result = (await response.json()) as { message?: string };
+        if (!response.ok) throw new Error(result.message);
+      } else {
+        const paymentDefinition = formDefinitions.find((item) => item.type === "PAYMENT_METHOD" && item.code === paymentMethod);
+        if (!paymentDefinition) throw new Error("Geçerli bir ödeme şekli seçin.");
+        if (assignedShares.length < quantity) throw new Error("Seçilen projede yeterli boş hisse bulunmuyor.");
+        for (let index = 0; index < quantity; index += 1) {
+          const response = await fetch("/api/sacrifice-donations", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              idempotencyKey: crypto.randomUUID(),
+              donor: {
+                firstName: String(values.get("firstName") ?? ""),
+                lastName: String(values.get("lastName") ?? ""),
+                phone: String(values.get("phone") ?? ""),
+                phoneCountry,
+                closePhone: sendToProxy ? String(values.get("proxyPhone") ?? "") || null : null,
+                originCountry: String(values.get("originCountry") ?? "") || null,
+                originCity: String(values.get("originCity") ?? "") || null,
+                originDistrict: String(values.get("originDistrict") ?? "") || null,
+              },
+              projectId: selected.id,
+              typeId: selected.typeId,
+              groupId: selected.groupId,
+              amount: numericAmount,
+              foreignAmount: null,
+              currencyId: selected.currencyId,
+              paymentMethodId: paymentDefinition.id,
+              receiptDate: values.get("date"),
+              description: details,
+              messageTarget: sendToProxy ? "CLOSE" : "DONOR",
+              sendSms: sendWhatsapp,
+              sendWhatsapp: false,
+              currencySms: sendCurrencySms,
+            }),
+          });
+          const result = (await response.json()) as { message?: string };
+          if (!response.ok) throw new Error(result.message ?? `${index + 1}. bağış kaydedilemedi.`);
+        }
+      }
+      setSuccess(editData ? "Bağış kaydı ve bağlı veritabanı bilgileri güncellendi." : `${quantity} adet kurban bağışı başarıyla kaydedildi ve hisseler atandı.`);
+      if (editData) {
+        await onSaved?.();
+        return;
+      }
       event.currentTarget.reset();
       setSendWhatsapp(true);
       setSendToProxy(false);
@@ -248,9 +413,9 @@ export function SacrificeDonationForm({
 
       <form onSubmit={submit}>
         <Card className={modal ? "overflow-hidden rounded-2xl border-0 shadow-none" : "overflow-hidden"}>
-          <div className={modal ? "sticky top-0 z-10 flex items-center justify-between bg-[#ff8a00] px-5 py-4 text-white sm:px-6" : "border-b border-emerald-700/20 bg-[#0d8f89] px-5 py-4 text-white sm:px-6"}>
+          <div className={modal ? "sticky top-0 z-10 flex items-center justify-between bg-[#ff8a00] px-5 py-4 text-white sm:px-6" : "border-b border-emerald-700/20 bg-[#02b3aa] px-5 py-4 text-white sm:px-6"}>
             <div className={modal ? "w-full text-center" : ""}>
-              <h3 className="font-bold uppercase tracking-wide">Kurban Bağış Formu</h3>
+              <h3 className="font-bold uppercase tracking-wide">{editData ? "Kurban Bağış Kaydını Güncelle" : "Kurban Bağış Formu"}</h3>
               {!modal && <p className="mt-1 text-xs text-emerald-50/80">Zorunlu alanları doldurarak bağış kaydını tamamlayın.</p>}
             </div>
             {modal && <button type="button" onClick={onClose} aria-label="Formu kapat" className="absolute right-4 grid size-9 place-items-center rounded-lg text-white/90 hover:bg-white/15 hover:text-white"><X className="size-5" /></button>}
@@ -269,8 +434,8 @@ export function SacrificeDonationForm({
                 />
               </Field>
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
-                <Field label="Bağışçı adı" required><Input name="firstName" required className="h-11" /></Field>
-                <Field label="Bağışçı soyadı" required><Input name="lastName" required className="h-11" /></Field>
+                <Field label="Bağışçı adı" required><Input name="firstName" defaultValue={editData?.firstName} required className="h-11" /></Field>
+                <Field label="Bağışçı soyadı" required><Input name="lastName" defaultValue={editData?.lastName} required className="h-11" /></Field>
               </div>
               <Field label="Gelen ülke">
                 <Select
@@ -328,19 +493,84 @@ export function SacrificeDonationForm({
                 <Field label="Grubu"><Select value={kind} onChange={(event) => changeKind(event.target.value as SacrificeKind)}>{SACRIFICE_KINDS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</Select></Field>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <Field label="Giden ülke"><Select name="destination" value={selected?.region ?? ""} onChange={(event) => chooseProject(available.find((option) => option.region === event.target.value))}><option value="">Seçiniz</option>{[...new Set(available.map((item) => item.region))].map((region) => <option key={region}>{region}</option>)}</Select></Field>
-                <Field label="Partner"><Select name="partner" defaultValue="Vefa">{formDefinitions.filter((item) => item.type === "PARTNER").map((item) => <option key={item.id} value={item.name}>{item.name}</option>)}</Select></Field>
+                <Field label="Giden ülke">
+                  <Select
+                    name="destination"
+                    value={destinationCountry}
+                    onChange={(event) => changeDestinationCountry(event.target.value)}
+                  >
+                    <option value="">Seçiniz</option>
+                    {formDefinitions
+                      .filter((item) => item.type === "DESTINATION_COUNTRY")
+                      .map((item) => <option key={item.id} value={item.name}>{item.name}</option>)}
+                  </Select>
+                </Field>
+                <Field label="Partner">
+                  <Select
+                    name="partner"
+                    value={partner}
+                    onChange={(event) => changePartner(event.target.value)}
+                  >
+                    <option value="">Seçiniz</option>
+                    {availablePartners
+                      .map((item) => <option key={item.id} value={item.name}>{item.name}</option>)}
+                  </Select>
+                </Field>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Giden bölge"><Select name="destinationRegion" value={selected?.region ?? ""} onChange={(event) => chooseProject(available.find((option) => option.region === event.target.value))}><option value="">Seçiniz</option>{[...new Set(available.map((item) => item.region))].map((region) => <option key={region}>{region}</option>)}</Select></Field>
-                <Field label="Proje adı"><Select name="projectName" value={selected?.id ?? ""} onChange={(event) => chooseProject(available.find((item) => item.id === event.target.value))}><option value="">Seçiniz</option>{available.map((item) => <option key={item.id} value={item.id}>{item.number}. Kurban · {item.region}</option>)}</Select></Field>
+                <Field label="Proje adı">
+                  <Select
+                    name="projectName"
+                    value={selected?.id ?? ""}
+                    onChange={(event) => chooseProject(available.find((item) => item.id === event.target.value))}
+                  >
+                    <option value="">Proje seçiniz</option>
+                    {matchingProjects.map((item) => {
+                      const filled = item.shares.filter((share) => share.status === "FILLED").length;
+                      const capacity = item.shares.length;
+                      const selectable = item.id === editData?.projectId ||
+                        item.status === "OPEN" &&
+                        item.shares.some((share) => share.status === "EMPTY");
+                      return (
+                        <option key={item.id} value={item.id} disabled={!selectable}>
+                          {item.number} | {item.group} | {item.country} | {item.partner || "—"} | {item.region || "—"} | [{filled}/{capacity}]
+                        </option>
+                      );
+                    })}
+                  </Select>
+                </Field>
               </div>
               <div className="grid grid-cols-3 gap-4">
-                <Field label="Ödeme şekli"><Select value={paymentMethod} onChange={(event) => setPaymentMethod(event.target.value)}>{PAYMENT_METHODS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</Select></Field>
-                <Field label="Adet"><Input value="1" readOnly className="h-11 bg-slate-50" /></Field>
-                <Field label="Kurban grup"><Input value={selected?.number ?? ""} readOnly className="h-11 bg-slate-50" /></Field>
+                <Field label="Ödeme şekli">
+                  <Select value={paymentMethod} onChange={(event) => setPaymentMethod(event.target.value)}>
+                    <option value="">Seçiniz</option>
+                    {formDefinitions
+                      .filter((item) => item.type === "PAYMENT_METHOD")
+                      .map((item) => <option key={item.id} value={item.code}>{item.name}</option>)}
+                  </Select>
+                </Field>
+                <Field label="Adet">
+                  <Select value={quantity} onChange={(event) => setQuantity(Number(event.target.value))}>
+                    {Array.from({ length: 7 }, (_, index) => index + 1).map((value) => (
+                      <option key={value} value={value} disabled={!editData && value > emptyShares.length}>{value}</option>
+                    ))}
+                  </Select>
+                </Field>
+                <Field label="Kurban grup">
+                  <Select
+                    value={selected?.id ?? ""}
+                    onChange={(event) => chooseProject(matchingProjects.find((item) => item.id === event.target.value))}
+                  >
+                    <option value="">Seçiniz</option>
+                    {matchingProjects.map((item) => {
+                      const hasEmptyShare = item.id === editData?.projectId || (item.status === "OPEN" && item.shares.some((share) => share.status === "EMPTY"));
+                      return <option key={item.id} value={item.id} disabled={!hasEmptyShare}>{item.number}</option>;
+                    })}
+                  </Select>
+                </Field>
               </div>
-              <Field label="Hisse"><div className="flex h-11 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3"><span className="grid size-7 place-items-center rounded-lg bg-emerald-600 text-xs font-bold text-white">{emptyShare?.shareNo ?? "—"}</span><span className="text-xs text-slate-600">{emptyShare ? "Otomatik atanacak boş hisse" : "Boş hisse bulunamadı"}</span></div></Field>
+              <Field label="Hisse"><div className="flex min-h-11 items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">{editData ? <><span className="grid size-7 place-items-center rounded-lg bg-emerald-600 text-xs font-bold text-white">{editData.shareNo}</span><span className="text-xs text-slate-600">Mevcut hisse; proje değişirse uygun boş hisse atanır</span></> : <><span className="flex flex-wrap gap-1">{assignedShares.length ? assignedShares.map((share) => <span key={share.shareNo} className="grid size-7 place-items-center rounded-lg bg-emerald-600 text-xs font-bold text-white">{share.shareNo}</span>) : <span className="grid size-7 place-items-center rounded-lg bg-slate-300 text-xs font-bold text-white">—</span>}</span><span className="text-xs text-slate-600">{assignedShares.length ? `${assignedShares.length} boş hisse otomatik atanacak` : "Boş hisse bulunamadı"}</span></>}</div></Field>
             </FormSection>
 
             <FormSection title="Ödeme ve iletişim">
@@ -351,9 +581,9 @@ export function SacrificeDonationForm({
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <Field label="Makbuz No"><Input value="Otomatik" readOnly className="h-11 bg-slate-50" /></Field>
-                <Field label="Tarih"><Input type="date" defaultValue={new Date().toISOString().slice(0, 10)} className="h-11" /></Field>
+                <Field label="Tarih"><Input name="date" type="date" defaultValue={editData?.date ? editData.date.slice(0, 10) : new Date().toISOString().slice(0, 10)} className="h-11" /></Field>
               </div>
-              <Field label="Açıklama"><textarea name="description" className={`${fieldClass} min-h-24 resize-none py-3`} placeholder="Bağışa ilişkin açıklama..." /></Field>
+              <Field label="Açıklama"><textarea name="description" defaultValue={editData?.description} className={`${fieldClass} min-h-24 resize-none py-3`} placeholder="Bağışa ilişkin açıklama..." /></Field>
               <Field label="Vekâlet telefonu">
                 <InternationalPhoneField
                   name="proxyPhone"
@@ -363,12 +593,21 @@ export function SacrificeDonationForm({
                   onValueChange={setProxyPhone}
                 />
               </Field>
-              <div className="grid gap-3 sm:grid-cols-[1fr_130px]">
+              <div className="grid gap-3 sm:grid-cols-[1fr_130px_130px]">
                 <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
                   <input type="checkbox" checked={sendToProxy} onChange={(event) => setSendToProxy(event.target.checked)} className="size-4 accent-emerald-600" />
                   <span className="text-[11px] font-semibold text-slate-600">Mesaj bu telefona gitsin</span>
                 </label>
-                <Field label="SMS servisi"><Select name="smsProvider" defaultValue="NETGSM"><option>NETGSM</option></Select></Field>
+                <Field label="SMS servisi"><Select name="smsProvider" defaultValue="TWILIO"><option value="TWILIO">Twilio SMS</option></Select></Field>
+                <Field label="SMS bildirimi">
+                  <Select
+                    value={sendWhatsapp ? "SEND" : "SKIP"}
+                    onChange={(event) => setSendWhatsapp(event.target.value === "SEND")}
+                  >
+                    <option value="SEND">Twilio SMS gönder</option>
+                    <option value="SKIP">Gönderme</option>
+                  </Select>
+                </Field>
               </div>
               <div className="grid grid-cols-[1fr_auto] gap-3">
                 <Field label="Mesaj / döviz tutarı"><Input name="smsAmount" defaultValue="0" inputMode="decimal" className="h-11 border-amber-200 bg-amber-50 font-semibold" /></Field>
@@ -378,14 +617,13 @@ export function SacrificeDonationForm({
                 </label>
               </div>
               <div className={modal ? "grid grid-cols-[1fr_auto_auto] items-stretch gap-2 pt-1" : ""}>
-                <label className={modal ? "flex min-w-0 cursor-pointer items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50 px-3" : "flex cursor-pointer items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50 p-3"}>
-                  <input type="checkbox" checked={sendWhatsapp} onChange={(event) => setSendWhatsapp(event.target.checked)} className="size-4 shrink-0 accent-emerald-600" />
+                <div className={modal ? "flex min-w-0 items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50 px-3" : "flex items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50 p-3"}>
                   <MessageCircle className="size-4 shrink-0 text-emerald-700" />
-                  <span className="min-w-0"><span className="block truncate text-xs font-semibold text-emerald-900">Mesaj gönder</span>{!modal && <span className="mt-0.5 block text-[10px] text-emerald-700">Bağışçıya WhatsApp teşekkür mesajı iletilir.</span>}</span>
-                </label>
+                  <span className="min-w-0"><span className="block truncate text-xs font-semibold text-emerald-900">{sendWhatsapp ? "Twilio SMS gönderilecek" : "SMS gönderilmeyecek"}</span>{!modal && <span className="mt-0.5 block text-[10px] text-emerald-700">Tercihi yukarıdaki SMS bildirimi alanından değiştirebilirsin.</span>}</span>
+                </div>
                 {modal && <>
                   <button type="button" onClick={onClose} className="inline-flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-600 hover:bg-slate-50">İptal</button>
-                  <Button type="submit" variant="success" className="h-10 whitespace-nowrap px-3 text-xs" disabled={saving || !selected}>{saving ? <LoaderCircle className="size-4 animate-spin" /> : <><Save className="size-4" /> Bağışı Kaydet</>}</Button>
+                  <Button type="submit" variant="success" className="h-10 whitespace-nowrap px-3 text-xs" disabled={saving || !selected}>{saving ? <LoaderCircle className="size-4 animate-spin" /> : <><Save className="size-4" /> {editData ? "Güncelle" : "Bağışı Kaydet"}</>}</Button>
                 </>}
               </div>
             </FormSection>
@@ -432,7 +670,9 @@ function InternationalPhoneField({
 }) {
   const selected = PHONE_COUNTRIES.find((item) => item.code === country) ?? PHONE_COUNTRIES[0];
   const localDigits = value.replace(/\D/g, "");
-  const internationalValue = `${selected.dial}${localDigits}`;
+  const dialDigits = selected.dial.replace(/\D/g, "");
+  const withoutRepeatedDial = localDigits.startsWith(dialDigits) ? localDigits.slice(dialDigits.length) : localDigits;
+  const internationalValue = `${selected.dial}${withoutRepeatedDial.replace(/^0+/, "")}`;
 
   return (
     <div className="sacrifice-control relative flex h-11 rounded-xl border border-slate-200 bg-white transition focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-50">

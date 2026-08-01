@@ -66,7 +66,8 @@ export const ModelName = {
   AppSetting: 'AppSetting',
   Association: 'Association',
   Poster: 'Poster',
-  ImportJob: 'ImportJob'
+  ImportJob: 'ImportJob',
+  OnlineDonationSubmission: 'OnlineDonationSubmission'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -211,12 +212,23 @@ export const DonationScalarFieldEnum = {
   typeId: 'typeId',
   groupId: 'groupId',
   representativeId: 'representativeId',
+  destinationCountryId: 'destinationCountryId',
+  destinationRegionId: 'destinationRegionId',
+  partnerId: 'partnerId',
   quantity: 'quantity',
+  unitType: 'unitType',
+  unitPrice: 'unitPrice',
   amount: 'amount',
   foreignAmount: 'foreignAmount',
   currencyId: 'currencyId',
   paymentMethodId: 'paymentMethodId',
   description: 'description',
+  proxyOwner: 'proxyOwner',
+  address: 'address',
+  specialCondition: 'specialCondition',
+  orderStatus: 'orderStatus',
+  smsProvider: 'smsProvider',
+  currencySms: 'currencySms',
   messageTarget: 'messageTarget',
   status: 'status',
   cancelledAt: 'cancelledAt',
@@ -363,6 +375,31 @@ export const ImportJobScalarFieldEnum = {
 } as const
 
 export type ImportJobScalarFieldEnum = (typeof ImportJobScalarFieldEnum)[keyof typeof ImportJobScalarFieldEnum]
+
+
+export const OnlineDonationSubmissionScalarFieldEnum = {
+  id: 'id',
+  externalReference: 'externalReference',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  phone: 'phone',
+  email: 'email',
+  originCountry: 'originCountry',
+  originCity: 'originCity',
+  originDistrict: 'originDistrict',
+  campaign: 'campaign',
+  amount: 'amount',
+  currencyCode: 'currencyCode',
+  status: 'status',
+  approvedDonationId: 'approvedDonationId',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OnlineDonationSubmissionScalarFieldEnum = (typeof OnlineDonationSubmissionScalarFieldEnum)[keyof typeof OnlineDonationSubmissionScalarFieldEnum]
 
 
 export const SortOrder = {

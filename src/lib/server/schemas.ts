@@ -4,7 +4,7 @@ export const definitionTypeSchema = z.enum([
   "DEPARTMENT", "YEAR", "DONATION_TYPE", "DONATION_GROUP", "ORIGIN_COUNTRY",
   "ORIGIN_CITY", "ORIGIN_DISTRICT", "DESTINATION_COUNTRY", "DESTINATION_REGION",
   "PARTNER", "REPRESENTATIVE", "PAYMENT_METHOD", "CURRENCY", "ORGANIZATION",
-  "MESSAGE_TEMPLATE", "PROJECT_STATUS", "SHARE_STATUS",
+  "MESSAGE_TEMPLATE", "PROJECT_STATUS", "SHARE_STATUS", "UNIT_TYPE", "GENERAL_DONATION_GROUP",
 ]);
 
 export const definitionInputSchema = z.object({
@@ -25,7 +25,7 @@ export const projectInputSchema = z.object({
   groupId: z.string().cuid(),
   destinationCountryId: z.string().cuid(),
   partnerId: z.string().cuid().nullable().optional(),
-  destinationRegionId: z.string().cuid().nullable().optional(),
+  destinationRegionId: z.string().cuid(),
   projectNumber: z.coerce.number().int().positive(),
   name: z.string().trim().min(3).max(180),
   animalType: z.enum(["CATTLE", "SMALL_ANIMAL"]),
